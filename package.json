@@ -1,6 +1,6 @@
 {
   "name": "@openeugenia/graphic-charter",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Common graphic charter of the openEugenia ecosystem: design tokens, CSS custom properties and base components.",
   "license": "MIT",
   "repository": {
@@ -36,7 +36,9 @@
     "build:min": "sass --no-source-map --style=compressed scss/openeugenia.scss dist/openeugenia.min.css",
     "watch": "sass --watch scss/openeugenia.scss dist/openeugenia.css",
     "prepublishOnly": "npm run build",
-    "build:logos": "node scripts/build-logos.mjs"
+    "build:logos": "node scripts/build-logos.mjs",
+    "prepare": "npm run build",
+    "build:site": "npm run build && node scripts/build-site.mjs"
   },
   "devDependencies": {
     "sass": "^1.80.0"

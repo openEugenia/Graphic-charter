@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <!-- Abstract building for the demo hero (replace with a real photo). -->
+  <rect width="1600" height="1000" fill="#c9d3dc"/>
+  <rect y="760" width="1600" height="240" fill="#4b5a52"/>
+  <polygon points="520,180 1080,120 1120,820 480,820" fill="#eef1f4"/>
+  <polygon points="1080,120 1260,220 1260,820 1120,820" fill="#aab4be"/>
+  <g fill="#3b4a5c">
+    <rect x="600" y="260" width="120" height="70"/><rect x="760" y="250" width="120" height="70"/><rect x="920" y="240" width="120" height="70"/>
+    <rect x="600" y="420" width="120" height="70"/><rect x="760" y="410" width="120" height="70"/><rect x="920" y="400" width="120" height="70"/>
+    <rect x="600" y="580" width="120" height="70"/><rect x="760" y="570" width="120" height="70"/><rect x="920" y="560" width="120" height="70"/>
+  </g>
+  <polygon points="600,350 1000,330 820,390" fill="#7f8b96"/>
+  <g fill="#2f3b33">
+    <ellipse cx="300" cy="760" rx="220" ry="160"/><ellipse cx="1400" cy="740" rx="260" ry="190"/><ellipse cx="900" cy="860" rx="420" ry="120"/>
+  </g>
+</svg>

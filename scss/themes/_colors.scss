@@ -33,6 +33,11 @@ $colors: (
   link-hover: -pair(-mix(60%, #000), -mix(35%, #fff)),
   focus: -pair(var(--oe-brand), -mix(65%, #fff)),
 
+  // Glass panels: translucent surface and brand-tinted hairline border.
+  glass: -pair(rgb(255 255 255 / 0.6), rgb(23 29 37 / 0.55)),
+  glass-border: -pair(-mix(22%, transparent), color-mix(in srgb, var(--oe-brand-glow) 28%, transparent)),
+  divider: -pair(-mix(30%, transparent), color-mix(in srgb, var(--oe-brand-glow) 40%, transparent)),
+
   success: -pair(map.get($status, success, light), map.get($status, success, dark)),
   warning: -pair(map.get($status, warning, light), map.get($status, warning, dark)),
   danger: -pair(map.get($status, danger, light), map.get($status, danger, dark)),

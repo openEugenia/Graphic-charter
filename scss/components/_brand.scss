@@ -34,9 +34,35 @@
 }
 
 // Full-width section in the logo colours: always dark, navy background.
+// Optional photo, desaturated and tinted navy like the posters, darker at the
+// bottom so text and glass panels stay readable:
+//   <section class="oe-hero">
+//     <img class="oe-hero__image" src="building.jpg" alt="">
+//     …
 .oe-hero {
+  position: relative;
+  isolation: isolate;
   color-scheme: dark;
   color: var(--oe-color-text);
   background-color: var(--oe-logo-bg);
   padding-block: var(--oe-space-9);
+
+  &__image {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: luminosity;
+    opacity: 0.7;
+  }
+
+  &:has(> .oe-hero__image)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgb(17 22 29 / 0.72), rgb(17 22 29 / 0.94));
+  }
 }

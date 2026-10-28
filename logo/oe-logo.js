@@ -6,6 +6,21 @@
 //   <oe-logo variant="horizontal" label="OE-CONF 2026"></oe-logo>
 //   <oe-logo color="#7c3aed"></oe-logo>                 explicit brand colour
 //
+// Options, each enabled by its attribute and disabled by removing it:
+//   <oe-logo animated></oe-logo>                        frame glow gently moves
+//   <oe-logo vector="signature.json"></oe-logo>         vector drawn as a background matrix
+//   <oe-logo vector="[0.12, -0.4, …]"></oe-logo>        inline JSON array
+//   logo.vector = float32Array;                         or set from JavaScript
+//   <oe-logo vector="…" vignette></oe-logo>             matrix darkened towards the edges
+//   <oe-logo vector="…" tint></oe-logo>                 brightest squares in the brand colour
+//
+// The JSON file holds an array of numbers, or an object with a `vector` array.
+// The matrix is hidden when the logo is smaller than `matrix-min-size` pixels
+// (64 by default, 0 to always show it): below that it only reads as a texture.
+//
+// With `animated`, small logos move more slowly (7s from 240px up, up to 20s):
+// the same rotation looks hasty on a few pixels. Override with the CSS
+// property --oe-logo-glow-duration.
 // Without `color`, the frame follows --oe-brand of the page (charter CSS).
 
 import { BRANDS, DEFAULT_LABEL, logoSvg } from "./logo.js";
@@ -35,20 +50,99 @@ const STYLE = `
   }
 `;
 
+const DEFAULT_MATRIX_MIN_SIZE = 64;
+
+function glowDuration(size) {
+  return Math.min(20, Math.max(7, (7 * 240) / Math.max(size, 1)));
+}
+
 class OeLogo extends HTMLElement {
-  static observedAttributes = ["variant", "label", "color"];
+  static observedAttributes = ["variant", "label", "color", "animated", "vector", "vignette", "tint", "matrix-min-size"];
+
+  #vector = null;
+  #vectorRequest = 0;
+  #tooSmall = false;
+  #duration = 7;
+  #resizeObserver = new ResizeObserver(([entry]) => {
+    // The horizontal variant's mark is as tall as the element.
+    const { width, height } = entry.contentRect;
+    const size = this.getAttribute("variant") === "horizontal" ? height : width;
+
+    // Updated in place: re-rendering would restart the animation.
+    const duration = glowDuration(size);
+    if (Math.abs(duration - this.#duration) >= 0.5) {
+      this.#duration = duration;
+      const style = this.shadowRoot.querySelector("#duration");
+      if (style) style.textContent = this.#durationStyle();
+    }
+
+    const minSize = Number(this.getAttribute("matrix-min-size") ?? DEFAULT_MATRIX_MIN_SIZE);
+    const tooSmall = size < minSize;
+    if (tooSmall !== this.#tooSmall) {
+      this.#tooSmall = tooSmall;
+      if (this.#vector) this.render();
+    }
+  });
 
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
   }
 
-  connectedCallback() {
+  get vector() {
+    return this.#vector;
+  }
+
+  set vector(values) {
+    this.#vectorRequest++;
+    this.#vector = values ? Array.from(values) : null;
     this.render();
   }
 
-  attributeChangedCallback() {
+  connectedCallback() {
+    this.#resizeObserver.observe(this);
+    this.render();
+  }
+
+  disconnectedCallback() {
+    this.#resizeObserver.disconnect();
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "vector") {
+      this.#loadVector(newValue);
+    } else if (name === "matrix-min-size") {
+      // Re-measure against the new threshold.
+      this.#resizeObserver.disconnect();
+      if (this.isConnected) this.#resizeObserver.observe(this);
+    } else if (this.isConnected) {
+      this.render();
+    }
+  }
+
+  async #loadVector(source) {
+    const request = ++this.#vectorRequest;
+    let vector = null;
+    try {
+      if (source?.trim().startsWith("[")) {
+        vector = JSON.parse(source);
+      } else if (source) {
+        const response = await fetch(source);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        vector = Array.isArray(data) ? data : data.vector;
+      }
+    } catch (error) {
+      console.warn(`<oe-logo>: cannot load vector "${source}"`, error);
+    }
+    // Ignore responses superseded by a newer attribute or property value.
+    if (request !== this.#vectorRequest) return;
+    this.#vector = vector;
     if (this.isConnected) this.render();
+  }
+
+  #durationStyle() {
+    return `:host { --_oe-logo-auto-duration: ${this.#duration.toFixed(1)}s; }`;
   }
 
   render() {
@@ -56,12 +150,18 @@ class OeLogo extends HTMLElement {
     const label = this.getAttribute("label") || DEFAULT_LABEL;
     const color = this.getAttribute("color");
     const brand = color ? `:host { --_brand: ${color}; }` : "";
+    const options = {
+      animated: this.hasAttribute("animated"),
+      vector: this.#tooSmall ? null : this.#vector,
+      vignette: this.hasAttribute("vignette"),
+      tint: this.hasAttribute("tint"),
+    };
 
     const content = variant === "horizontal"
-      ? `<div class="horizontal">${logoSvg({ variant: "mark", title: "" })}<span>${label.replace(/</g, "&lt;")}</span></div>`
-      : logoSvg({ variant, label });
+      ? `<div class="horizontal">${logoSvg({ variant: "mark", title: "", ...options })}<span>${label.replace(/</g, "&lt;")}</span></div>`
+      : logoSvg({ variant, label, ...options });
 
-    this.shadowRoot.innerHTML = `<style>${STYLE}${brand}</style>${content}`;
+    this.shadowRoot.innerHTML = `<style>${STYLE}${brand}</style><style id="duration">${this.#durationStyle()}</style>${content}`;
     if (variant === "horizontal") {
       this.shadowRoot.querySelector("svg").setAttribute("aria-hidden", "true");
     }

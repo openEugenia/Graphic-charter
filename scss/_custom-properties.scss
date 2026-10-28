@@ -37,6 +37,7 @@
   --oe-easing: #{$easing-standard};
 
   --oe-container-max-width: #{$container-max-width};
+  --oe-glass-blur: 14px;
 
   // Logo identity: always-dark background of the logo.
   --oe-logo-bg: #{palette(neutral, 950)};

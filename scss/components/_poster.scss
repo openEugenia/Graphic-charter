@@ -1,0 +1,82 @@
+// Editorial elements taken from the event posters of the ecosystem.
+
+// Translucent, blurred panel. Best over an image or a coloured background
+// (e.g. inside .oe-hero); falls back to an opaque surface without
+// backdrop-filter support.
+.oe-glass {
+  background-color: var(--oe-color-glass);
+  border: var(--oe-border-width) solid var(--oe-color-glass-border);
+  border-radius: var(--oe-radius-md);
+  -webkit-backdrop-filter: blur(var(--oe-glass-blur)) saturate(1.2);
+  backdrop-filter: blur(var(--oe-glass-blur)) saturate(1.2);
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: var(--oe-color-surface);
+  }
+}
+
+.oe-card--glass {
+  @extend .oe-glass;
+  box-shadow: none;
+}
+
+// Key fact: icon + tracked uppercase label in the brand colour, then the value.
+//   <div class="oe-info oe-glass">
+//     <span class="oe-info__label"><svg …/> Date</span>
+//     <span class="oe-info__value">June 30, 2026 at 7:45 PM</span>
+//   </div>
+.oe-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--oe-space-2);
+  padding: var(--oe-space-4);
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: var(--oe-space-2);
+    font-size: var(--oe-font-size-xs);
+    font-weight: var(--oe-font-weight-semibold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--oe-color-primary);
+
+    svg {
+      flex: none;
+      width: 1.75em;
+      height: 1.75em;
+    }
+  }
+
+  &__value {
+    font-weight: var(--oe-font-weight-semibold);
+    line-height: var(--oe-line-height-snug);
+  }
+}
+
+// Brand-coloured lead sentence with a vertical bar.
+.oe-tagline {
+  padding-left: var(--oe-space-4);
+  border-left: 3px solid var(--oe-color-primary);
+  font-size: var(--oe-font-size-xl);
+  font-weight: var(--oe-font-weight-medium);
+  line-height: var(--oe-line-height-snug);
+  color: var(--oe-color-primary);
+}
+
+// Poster title: large, bold, tracked capitals.
+.oe-display {
+  font-size: clamp(var(--oe-font-size-2xl), 4vw, var(--oe-font-size-4xl));
+  font-weight: var(--oe-font-weight-extrabold);
+  letter-spacing: 0.08em;
+  line-height: var(--oe-line-height-snug);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+// Brand-tinted hairline.
+.oe-divider {
+  border: 0;
+  border-top: var(--oe-border-width) solid var(--oe-color-divider);
+  margin-block: var(--oe-space-5);
+}
