@@ -1,0 +1,30 @@
+// Element-like tile, a miniature of the logo: navy square, brand gradient
+// frame, one or two letters ("Pr", "Co", "Œ"). Identifies a project or a
+// page of the ecosystem.
+//   <span class="oe-symbol">Pr</span>   [--sm | --lg | --xl]
+
+.oe-symbol {
+  --_size: 3rem;
+
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--_size);
+  height: var(--_size);
+  border: max(2px, calc(var(--_size) * 0.04)) solid transparent;
+  border-radius: calc(var(--_size) * 0.12);
+  background:
+    linear-gradient(var(--oe-logo-bg), var(--oe-logo-bg)) padding-box,
+    linear-gradient(135deg, var(--oe-brand-glow), #05080b 50%, var(--oe-brand-glow)) border-box;
+  color: #fff;
+  font-family: var(--oe-font-heading);
+  font-size: calc(var(--_size) * 0.4);
+  font-weight: var(--oe-font-weight-extrabold);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  user-select: none;
+
+  &--sm { --_size: 2.25rem; }
+  &--lg { --_size: 4rem; }
+  &--xl { --_size: 5.5rem; }
+}

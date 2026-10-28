@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poster · openEugenia Graphic Charter</title>
+  <meta name="description" content="Event poster built with the openEugenia graphic charter: glass panels, info tiles, tagline and display title.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="../dist/openeugenia.css">
+  <link rel="stylesheet" href="demo.css">
+  <script type="module" src="../logo/oe-logo.js"></script>
+  <script type="module" src="demo.js"></script>
+</head>
+<body>
+  <div class="oe-container">
+    <header class="site-header">
+      <a href="index.html" aria-label="Graphic charter home"><oe-logo variant="horizontal"></oe-logo></a>
+      <nav class="site-nav" aria-label="Documentation">
+        <a href="index.html">Modules</a>
+        <a href="poster.html" aria-current="page">Poster</a>
+        <a href="explorer.html">Explorer</a>
+      </nav>
+      <div class="oe-cluster">
+        <select class="oe-select" id="brand" aria-label="Brand colour" style="width: auto">
+          <option value="">openEugenia (blue)</option>
+          <option value="mint">mint</option>
+          <option value="violet">violet</option>
+          <option value="rose">rose</option>
+        </select>
+        <button class="oe-button oe-button--ghost oe-button--sm" data-set-theme="light">Light</button>
+        <button class="oe-button oe-button--ghost oe-button--sm" data-set-theme="dark">Dark</button>
+        <button class="oe-button oe-button--ghost oe-button--sm" data-set-theme="">System</button>
+      </div>
+    </header>
+  </div>
+
+  <section class="oe-hero" id="poster">
+    <img class="oe-hero__image" src="hero-sample.svg" alt="">
+    <div class="oe-container oe-stack">
+      <div class="event-head">
+        <oe-logo class="demo-logo" variant="mark" style="width: 140px"></oe-logo>
+        <div class="oe-stack" style="gap: var(--oe-space-2)">
+          <span class="oe-eyebrow" style="color: var(--oe-color-text)">2026 edition · April to July</span>
+          <p class="event-intro">Conference cycle of the openEugenia ecosystem</p>
+        </div>
+      </div>
+      <p class="oe-tagline">Imagine and describe more human and responsible uses of contemporary technologies</p>
+
+      <div style="text-align: center; padding-block: var(--oe-space-6) var(--oe-space-2)">
+        <span class="oe-eyebrow" style="color: var(--oe-color-text)">Conference III</span>
+        <h2 class="oe-display">Creating and thinking in the technological age</h2>
+      </div>
+      <hr class="oe-divider">
+
+      <div class="oe-grid" style="gap: var(--oe-space-3); grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr))">
+        <div class="oe-info oe-glass">
+          <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Date</span>
+          <span class="oe-info__value">June 30, 2026 at 7:45 PM</span>
+        </div>
+        <div class="oe-info oe-glass">
+          <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h12l-1 7a5 5 0 0 1-10 0zM12 15v6M8 21h8"/></svg>Snacks and drinks</span>
+          <span class="oe-info__value">To deepen the discussion</span>
+        </div>
+        <div class="oe-info oe-glass">
+          <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Location</span>
+          <span class="oe-info__value">Venue name, Paris</span>
+        </div>
+      </div>
+
+      <div class="oe-card oe-card--glass">
+        <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width: 1.75em; height: 1.75em"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6M8 18l-2 3"/></svg>Conference topics</span>
+        <ul class="topics">
+          <li><strong>Access to knowledge in the age of artificial intelligence</strong><em>~ Speaker name, role</em></li>
+          <li><strong>Artificial intelligence and the environment</strong><em>~ Speaker name, role</em></li>
+          <li><strong>Building near a moving coastline</strong><em>~ Speaker name, role</em></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="oe-container">
+    <main class="oe-stack" style="padding-top: var(--oe-space-7)">
+      <span class="oe-eyebrow">Event pages</span>
+      <h1>Poster</h1>
+      <p>The editorial modules of the charter, taken from the event posters of the ecosystem. The page above uses only charter classes; switch the theme and the brand in the header to see them follow.</p>
+
+      <h2>Building blocks</h2>
+      <div class="table-scroll">
+        <table class="classes">
+          <thead><tr><th>Class</th><th>Role on the poster</th></tr></thead>
+          <tbody>
+            <tr><td><code>oe-hero</code> + <code>oe-hero__image</code></td><td>Dark full-width section; the photo is desaturated, tinted navy and darkened towards the bottom.</td></tr>
+            <tr><td><code>oe-eyebrow</code></td><td>Tracked capitals: edition, conference number.</td></tr>
+            <tr><td><code>oe-tagline</code></td><td>Brand-coloured lead sentence with its vertical bar.</td></tr>
+            <tr><td><code>oe-display</code></td><td>Large tracked title.</td></tr>
+            <tr><td><code>oe-divider</code></td><td>Brand-tinted hairline under the title.</td></tr>
+            <tr><td><code>oe-glass</code>, <code>oe-card--glass</code></td><td>Translucent blurred panels over the photo.</td></tr>
+            <tr><td><code>oe-info</code> (<code>__label</code>, <code>__value</code>)</td><td>Key facts: date, location…</td></tr>
+            <tr><td><code>&lt;oe-logo&gt;</code></td><td>Event mark, with the logo options below.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Logo options</h2>
+      <div class="oe-cluster">
+        <label><input class="oe-checkbox" type="checkbox" id="toggle-animated"> <code>animated</code></label>
+        <label><input class="oe-checkbox" type="checkbox" id="toggle-vector"> <code>vector</code></label>
+        <label><input class="oe-checkbox" type="checkbox" id="toggle-vignette"> <code>vignette</code></label>
+        <label><input class="oe-checkbox" type="checkbox" id="toggle-tint"> <code>tint</code></label>
+      </div>
+      <p class="oe-help">Details on the <a href="index.html#logo">modules page</a>. Full reference: <a href="https://github.com/hwattez/Graphic-charter#readme">README</a>.</p>
+    </main>
+  </div>
+  <div class="oe-container site-footer">
+    <hr>
+    <p class="oe-text-muted">openEugenia — graphic charter v0.3.0 · <a href="https://github.com/hwattez/Graphic-charter">GitHub</a></p>
+  </div>
+</body>
+</html>

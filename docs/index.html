@@ -4,31 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>openEugenia Graphic Charter</title>
+  <meta name="description" content="Modules of the openEugenia graphic charter: logo, colours, typography and components.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="../dist/openeugenia.css">
+  <link rel="stylesheet" href="demo.css">
   <script type="module" src="../logo/oe-logo.js"></script>
-  <style>
-    .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--oe-space-3); }
-    .swatch { border: var(--oe-border-width) solid var(--oe-color-border); border-radius: var(--oe-radius-md); overflow: hidden; font-size: var(--oe-font-size-sm); }
-    .swatch > div { height: 3.5rem; }
-    .swatch > code { display: block; padding: var(--oe-space-2); border: 0; background: none; }
-    header { display: flex; flex-wrap: wrap; gap: var(--oe-space-4); justify-content: space-between; align-items: center; padding-block: var(--oe-space-5); }
-    .hero-grid { display: grid; gap: var(--oe-space-7); align-items: center; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
-    .hero-grid oe-logo { width: min(100%, 320px); justify-self: center; }
-    .logos { display: flex; flex-wrap: wrap; gap: var(--oe-space-6); align-items: end; }
-    .event-head { display: flex; flex-wrap: wrap; gap: var(--oe-space-5); align-items: center; }
-    .event-intro { font-size: var(--oe-font-size-xl); text-transform: uppercase; letter-spacing: 0.04em; line-height: var(--oe-line-height-tight); max-width: 36rem; }
-    .topics { list-style: none; padding: 0 0 0 var(--oe-space-5); margin: 0; display: grid; gap: var(--oe-space-3); }
-    .topics li { display: grid; }
-    .topics em { color: var(--oe-color-text-muted); }
-    .logos figure { display: grid; gap: var(--oe-space-2); justify-items: center; font-size: var(--oe-font-size-sm); color: var(--oe-color-text-muted); }
-  </style>
+  <script type="module" src="demo.js"></script>
 </head>
 <body>
   <div class="oe-container">
-    <header>
-      <oe-logo variant="horizontal"></oe-logo>
+    <header class="site-header">
+      <a href="index.html" aria-label="Graphic charter home"><oe-logo variant="horizontal"></oe-logo></a>
+      <nav class="site-nav" aria-label="Documentation">
+        <a href="index.html" aria-current="page">Modules</a>
+        <a href="poster.html">Poster</a>
+        <a href="explorer.html">Explorer</a>
+      </nav>
       <div class="oe-cluster">
         <select class="oe-select" id="brand" aria-label="Brand colour" style="width: auto">
           <option value="">openEugenia (blue)</option>
@@ -52,6 +44,7 @@
         <div class="oe-cluster">
           <a class="oe-button oe-button--lg" href="#logo">The logo</a>
           <a class="oe-button oe-button--secondary oe-button--lg" href="#components">Components</a>
+          <a class="oe-button oe-button--ghost oe-button--lg" href="poster.html">Poster</a>
         </div>
       </div>
       <oe-logo class="demo-logo"></oe-logo>
@@ -108,7 +101,7 @@ import "@openeugenia/graphic-charter/logo";</code></pre>
         <figure><oe-logo class="demo-logo" color="#7c3aed" style="width: 120px"></oe-logo><figcaption>color="#7c3aed"</figcaption></figure>
       </div>
 
-      <p>See also the <a href="#event">event page</a> example: glass panels, info tiles, tagline and display title.</p>
+      <p>The <a href="poster.html">poster page</a> shows the editorial modules: glass panels, info tiles, tagline and display title.</p>
 
       <h2 id="components">Semantic colours</h2>
       <div class="swatches" id="swatches"></div>
@@ -195,91 +188,9 @@ import "@openeugenia/graphic-charter/logo";</code></pre>
     </main>
   </div>
 
-  <section class="oe-hero" id="event">
-    <img class="oe-hero__image" src="hero-sample.svg" alt="">
-    <div class="oe-container oe-stack">
-      <div class="event-head">
-        <oe-logo class="demo-logo" variant="mark" style="width: 140px"></oe-logo>
-        <div class="oe-stack" style="gap: var(--oe-space-2)">
-          <span class="oe-eyebrow" style="color: var(--oe-color-text)">2026 edition · April to July</span>
-          <p class="event-intro">Conference cycle of the openEugenia ecosystem</p>
-        </div>
-      </div>
-      <p class="oe-tagline">Imagine and describe more human and responsible uses of contemporary technologies</p>
-
-      <div style="text-align: center; padding-block: var(--oe-space-6) var(--oe-space-2)">
-        <span class="oe-eyebrow" style="color: var(--oe-color-text)">Conference III</span>
-        <h2 class="oe-display">Creating and thinking in the technological age</h2>
-      </div>
-      <hr class="oe-divider">
-
-      <div class="oe-grid" style="gap: var(--oe-space-3); grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr))">
-        <div class="oe-info oe-glass">
-          <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Date</span>
-          <span class="oe-info__value">June 30, 2026 at 7:45 PM</span>
-        </div>
-        <div class="oe-info oe-glass">
-          <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h12l-1 7a5 5 0 0 1-10 0zM12 15v6M8 21h8"/></svg>Snacks and drinks</span>
-          <span class="oe-info__value">To deepen the discussion</span>
-        </div>
-        <div class="oe-info oe-glass">
-          <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Location</span>
-          <span class="oe-info__value">Venue name, Paris</span>
-        </div>
-      </div>
-
-      <div class="oe-card oe-card--glass">
-        <span class="oe-info__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width: 1.75em; height: 1.75em"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6M8 18l-2 3"/></svg>Conference topics</span>
-        <ul class="topics">
-          <li><strong>Access to knowledge in the age of artificial intelligence</strong><em>~ Speaker name, role</em></li>
-          <li><strong>Artificial intelligence and the environment</strong><em>~ Speaker name, role</em></li>
-          <li><strong>Building near a moving coastline</strong><em>~ Speaker name, role</em></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <div class="oe-container">
+  <div class="oe-container site-footer">
     <hr>
-    <p class="oe-text-muted" style="padding-bottom: var(--oe-space-6)">openEugenia — graphic charter v0.3.0</p>
+    <p class="oe-text-muted">openEugenia — graphic charter v0.3.0 · <a href="https://github.com/hwattez/Graphic-charter">GitHub</a></p>
   </div>
-
-  <script>
-    const tokens = ["bg", "surface", "border", "text", "text-muted", "primary", "primary-hover", "primary-subtle", "success", "warning", "danger", "info"];
-    document.getElementById("swatches").innerHTML = tokens.map(t =>
-      `<div class="swatch"><div style="background: var(--oe-color-${t})"></div><code>--oe-color-${t}</code></div>`
-    ).join("");
-
-    const root = document.documentElement;
-    const setData = (key, value) => value ? root.dataset[key] = value : delete root.dataset[key];
-    document.querySelectorAll("[data-set-theme]").forEach(b =>
-      b.addEventListener("click", () => setData("theme", b.dataset.setTheme)));
-    const brand = document.getElementById("brand");
-    brand.addEventListener("change", () => setData("brand", brand.value));
-
-    // Logo options: adding / removing the attribute is all it takes.
-    const logos = document.querySelectorAll(".demo-logo");
-    const toggles = {
-      "toggle-animated": (on) => logos.forEach(l => l.toggleAttribute("animated", on)),
-      "toggle-vector": (on) => logos.forEach(l => on ? l.setAttribute("vector", "sample-vector.json") : l.removeAttribute("vector")),
-      "toggle-vignette": (on) => logos.forEach(l => l.toggleAttribute("vignette", on)),
-      "toggle-tint": (on) => logos.forEach(l => l.toggleAttribute("tint", on)),
-    };
-    for (const [id, apply] of Object.entries(toggles)) {
-      const input = document.getElementById(id);
-      input.addEventListener("change", () => apply(input.checked));
-    }
-
-    // ?theme=light|dark&brand=violet&animated&vector&vignette&tint
-    const params = new URLSearchParams(location.search);
-    setData("theme", params.get("theme"));
-    if (params.get("brand")) { brand.value = params.get("brand"); setData("brand", brand.value); }
-    for (const option of ["animated", "vector", "vignette", "tint"]) {
-      if (params.has(option)) {
-        document.getElementById(`toggle-${option}`).checked = true;
-        toggles[`toggle-${option}`](true);
-      }
-    }
-  </script>
 </body>
 </html>

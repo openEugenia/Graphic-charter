@@ -172,6 +172,9 @@ and the utilities `oe-stack`, `oe-cluster`, `oe-grid`, `oe-text-muted`, `oe-visu
 Elements taken from the logo: `oe-eyebrow` (capitals tracked like "OPEN-EUGENIA"),
 `oe-frame` (gradient frame in the brand colour), `oe-hero` (dark section in the logo's colours).
 
+Symbol tile, a miniature of the logo for projects and pages: `<span class="oe-symbol">Pr</span>`
+(`--sm`, `--lg`, `--xl`).
+
 Elements taken from the event posters:
 
 | Class | Use |
@@ -198,8 +201,31 @@ Elements taken from the event posters:
 </section>
 ```
 
-See the demo page: [`docs/index.html`](docs/index.html), to be served over HTTP
-(`python3 -m http.server`, then `/docs/index.html?theme=light&brand=violet&animated&vector`).
+See the documentation pages, to be served over HTTP (`python3 -m http.server`):
+
+- [`docs/index.html`](docs/index.html): modules (logo, colours, typography, components);
+- [`docs/poster.html`](docs/poster.html): event poster built with the editorial modules.
+- [`docs/explorer.html`](docs/explorer.html): **LLMs.txt Explorer**, a first tool built on the charter (see below).
+
+Both accept `?theme=light|dark&brand=violet&animated&vector&vignette&tint`, kept when switching pages.
+
+## Tools
+
+### LLMs.txt Explorer
+
+[`docs/explorer.html`](docs/explorer.html) browses a hierarchy of `llms.txt` / `*.llms.md` files:
+the page on the left, its sub-pages on the right, each identified by an `oe-symbol`.
+
+- Open a root URL (the server must allow CORS), the built-in demo, or `?src=<url>` / `?src=demo`.
+- Markdown links (`.md`, `.txt`, relative) open in the explorer; other web links open in an
+  integrated viewer (sites that forbid framing must be opened in a new tab).
+- Breadcrumb, back button, tree view, sub-page filter, ⋮ menu per sub-page, sub-page counts
+  loaded in the background.
+- **+ Import**: add a page by URL or paste markdown under the current page (kept in memory only).
+- Remote markdown is rendered with [marked](https://marked.js.org/) and sanitised with
+  [DOMPurify](https://github.com/cure53/DOMPurify).
+
+Layout code lives in [`docs/explorer/`](docs/explorer/); everything else comes from the charter.
 
 ## Development
 
@@ -231,6 +257,6 @@ scripts/build-logos.mjs      → dist/logo/**/*.svg
 `dist/` is not committed: it is built when publishing to npm (`prepublishOnly`) and when
 installing from GitHub (`prepare`).
 
-The documentation site is the demo page (`docs/`) with `dist/` and `logo/` next to it. It is
+The documentation site is the `docs/` pages with `dist/` and `logo/` next to them. It is
 built and deployed by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) on every push
 to `main`. One-time setup: *Settings → Pages → Source: GitHub Actions*.

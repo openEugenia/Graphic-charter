@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMs.txt Explorer · openEugenia</title>
+  <meta name="description" content="Explore, visualise and navigate llms.txt hierarchies. A tool of the openEugenia ecosystem, built with its graphic charter.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../dist/openeugenia.css">
+  <link rel="stylesheet" href="explorer/explorer.css">
+  <script type="module" src="../logo/oe-logo.js"></script>
+  <script type="module" src="explorer/explorer.js"></script>
+</head>
+<body>
+  <header class="app-bar">
+    <a class="app-brand" href="index.html" title="Graphic charter documentation">
+      <oe-logo variant="mark" style="width: 2.25rem"></oe-logo>
+      <span class="app-brand__name">LLMs.txt <strong>Explorer</strong></span>
+    </a>
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb"></nav>
+    <div class="app-actions">
+      <button class="oe-button oe-button--ghost oe-button--sm" id="toggle-view" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v6M6 9h6v6M12 15h6M6 9v12h6"/><circle cx="6" cy="3" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="18" cy="15" r="1.5"/><circle cx="12" cy="21" r="1.5"/></svg>
+        <span>Tree</span>
+      </button>
+      <button class="oe-button oe-button--ghost oe-button--sm" id="open-import" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Import</span>
+      </button>
+      <button class="oe-button oe-button--secondary oe-button--sm" id="open-source" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h7M17 14l3 3-3 3"/></svg>
+        <span>Source</span>
+      </button>
+      <button class="oe-button oe-button--ghost oe-button--sm icon-only" id="toggle-theme" type="button" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="explorer" id="explorer">
+    <!-- Left: content of the current page -->
+    <article class="page-panel oe-card" id="page-panel" aria-live="polite">
+      <header class="page-head">
+        <span class="oe-symbol oe-symbol--lg" id="page-symbol">Œ</span>
+        <div class="page-head__text">
+          <h1 id="page-title">Loading…</h1>
+          <a class="page-path" id="page-path" target="_blank" rel="noopener"></a>
+        </div>
+        <div class="page-head__actions">
+          <button class="oe-button oe-button--ghost oe-button--sm" id="back" type="button" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            <span>Back</span>
+          </button>
+          <span class="oe-badge" id="link-count">0 links</span>
+        </div>
+      </header>
+      <hr class="oe-divider">
+      <div class="prose" id="page-content"></div>
+    </article>
+
+    <!-- Right: sub-pages of the current page -->
+    <aside class="subpages" aria-labelledby="subpages-title">
+      <div class="subpages__head">
+        <span class="oe-eyebrow" id="subpages-title">Sub-pages</span>
+        <span class="oe-badge" id="subpage-count">0</span>
+      </div>
+      <input class="oe-input" id="filter" type="search" placeholder="Filter sub-pages…" aria-label="Filter sub-pages">
+      <ul class="subpage-list" id="subpage-list"></ul>
+      <p class="oe-help empty" id="subpages-empty" hidden>No sub-page.</p>
+    </aside>
+
+    <!-- Tree view of the whole loaded hierarchy -->
+    <section class="tree-panel oe-card" id="tree-panel" hidden aria-labelledby="tree-title">
+      <span class="oe-eyebrow" id="tree-title">Hierarchy</span>
+      <p class="oe-help">Loaded pages and the sub-pages they link to. Select a page to open it.</p>
+      <ul class="tree" id="tree"></ul>
+    </section>
+  </main>
+
+  <!-- Start / change source -->
+  <dialog class="modal" id="source-dialog" aria-labelledby="source-title">
+    <form method="dialog" class="modal__body oe-stack" id="source-form">
+      <div class="modal__head">
+        <oe-logo variant="mark" style="width: 3.5rem"></oe-logo>
+        <div>
+          <span class="oe-eyebrow">openEugenia tools</span>
+          <h2 id="source-title">LLMs.txt Explorer</h2>
+        </div>
+      </div>
+      <p>Open the root of a hierarchy: an <code>llms.txt</code> or <code>index.llms.md</code> file.</p>
+      <div class="oe-field">
+        <label class="oe-label" for="source-url">Root URL</label>
+        <input class="oe-input" id="source-url" type="url" placeholder="https://example.org/llms.txt" required>
+        <span class="oe-help">The server must allow cross-origin requests (CORS).</span>
+      </div>
+      <div class="examples">
+        <span class="oe-label">Examples</span>
+        <button class="example" type="button" data-example="demo">
+          <span class="oe-symbol oe-symbol--sm">Œ</span>
+          <span><strong>Interactive demo</strong><span class="oe-help">The hierarchy of the original sketch, served locally</span></span>
+        </button>
+        <button class="example" type="button" data-example="https://llmstxt.org/llms.txt">
+          <span class="oe-symbol oe-symbol--sm">Ll</span>
+          <span><strong>llmstxt.org</strong><span class="oe-help">The official specification</span></span>
+        </button>
+      </div>
+      <div class="modal__actions">
+        <button class="oe-button oe-button--ghost" value="cancel" formnovalidate id="source-cancel">Cancel</button>
+        <button class="oe-button" value="load">Open</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Import a page into the current one -->
+  <dialog class="modal" id="import-dialog" aria-labelledby="import-title">
+    <form method="dialog" class="modal__body oe-stack" id="import-form">
+      <div>
+        <span class="oe-eyebrow">Add a sub-page to <span id="import-target"></span></span>
+        <h2 id="import-title">Import</h2>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab" type="button" role="tab" aria-selected="true" data-tab="url">From a URL</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="markdown">Paste markdown</button>
+      </div>
+      <div class="oe-field" data-panel="url">
+        <label class="oe-label" for="import-url">Page URL</label>
+        <input class="oe-input" id="import-url" type="url" placeholder="https://example.org/docs/page.md">
+      </div>
+      <div class="oe-field" data-panel="markdown" hidden>
+        <label class="oe-label" for="import-markdown">Markdown</label>
+        <textarea class="oe-textarea" id="import-markdown" rows="9" placeholder="# My page&#10;&#10;> Short description&#10;&#10;- [A link](https://example.org/page.md): what it is"></textarea>
+        <span class="oe-help">The first <code># heading</code> becomes the title.</span>
+      </div>
+      <div class="modal__actions">
+        <button class="oe-button oe-button--ghost" value="cancel" formnovalidate>Cancel</button>
+        <button class="oe-button" value="import">Import</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Integrated web viewer -->
+  <dialog class="modal modal--viewer" id="viewer-dialog" aria-labelledby="viewer-title">
+    <div class="viewer">
+      <div class="viewer__bar">
+        <span class="oe-badge oe-badge--info">🌐 Web</span>
+        <span class="viewer__title" id="viewer-title"></span>
+        <button class="oe-button oe-button--ghost oe-button--sm icon-only" id="viewer-reload" type="button" aria-label="Reload">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/></svg>
+        </button>
+        <a class="oe-button oe-button--ghost oe-button--sm icon-only" id="viewer-open" target="_blank" rel="noopener" aria-label="Open in a new tab">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></svg>
+        </a>
+        <button class="oe-button oe-button--ghost oe-button--sm icon-only" id="viewer-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="oe-alert oe-alert--info viewer__notice">
+        Some sites refuse to be displayed inside another page (<code>X-Frame-Options</code> or CSP). If the page stays blank, open it in a new tab.
+      </div>
+      <iframe class="viewer__frame" id="viewer-frame" title="Web page" referrerpolicy="no-referrer"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
+  </dialog>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>

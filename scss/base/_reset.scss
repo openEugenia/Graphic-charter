@@ -27,6 +27,11 @@ select {
   font: inherit;
 }
 
+// Components set `display`, which would otherwise override the attribute.
+[hidden] {
+  display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

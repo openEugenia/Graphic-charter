@@ -1,0 +1,31 @@
+/* Styles of the documentation pages only (not part of the charter). */
+
+.site-header { display: flex; flex-wrap: wrap; gap: var(--oe-space-4); justify-content: space-between; align-items: center; padding-block: var(--oe-space-5); }
+.site-header > a { color: inherit; text-decoration: none; }
+.site-nav { display: flex; gap: var(--oe-space-1); }
+.site-nav a { padding: var(--oe-space-2) var(--oe-space-3); border-radius: var(--oe-radius-md); font-weight: var(--oe-font-weight-semibold); text-decoration: none; color: var(--oe-color-text-muted); }
+.site-nav a:hover { color: var(--oe-color-text); background-color: var(--oe-color-surface); }
+.site-nav a[aria-current="page"] { color: var(--oe-color-primary); background-color: var(--oe-color-primary-subtle); }
+.site-footer { padding-bottom: var(--oe-space-6); }
+
+.hero-grid { display: grid; gap: var(--oe-space-7); align-items: center; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
+.hero-grid oe-logo { width: min(100%, 320px); justify-self: center; }
+
+.logos { display: flex; flex-wrap: wrap; gap: var(--oe-space-6); align-items: end; }
+.logos figure { display: grid; gap: var(--oe-space-2); justify-items: center; font-size: var(--oe-font-size-sm); color: var(--oe-color-text-muted); }
+
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--oe-space-3); }
+.swatch { border: var(--oe-border-width) solid var(--oe-color-border); border-radius: var(--oe-radius-md); overflow: hidden; font-size: var(--oe-font-size-sm); }
+.swatch > div { height: 3.5rem; }
+.swatch > code { display: block; padding: var(--oe-space-2); border: 0; background: none; }
+
+.event-head { display: flex; flex-wrap: wrap; gap: var(--oe-space-5); align-items: center; }
+.event-intro { font-size: var(--oe-font-size-xl); text-transform: uppercase; letter-spacing: 0.04em; line-height: var(--oe-line-height-tight); max-width: 36rem; }
+.topics { list-style: none; padding: 0 0 0 var(--oe-space-5); margin: 0; display: grid; gap: var(--oe-space-3); }
+.topics li { display: grid; }
+.topics em { color: var(--oe-color-text-muted); }
+
+.classes { width: 100%; border-collapse: collapse; font-size: var(--oe-font-size-sm); }
+.classes th, .classes td { text-align: left; vertical-align: top; padding: var(--oe-space-2) var(--oe-space-3); border-bottom: var(--oe-border-width) solid var(--oe-color-border); }
+.classes th { font-weight: var(--oe-font-weight-semibold); }
+.table-scroll { overflow-x: auto; }
