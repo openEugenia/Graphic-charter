@@ -1,0 +1,70 @@
+// Emits every token as a CSS custom property (`--oe-*`).
+//
+// Theme: follows the OS preference; force it with `data-theme="light|dark"`
+// on any element (usually <html>, or a section to invert it locally).
+//
+// Brand: set `--oe-brand` on :root, or use a preset with `data-brand="<name>"`.
+// Brand-derived tokens are re-declared on every `[data-brand]` element so a
+// section can carry another brand: `<section data-brand style="--oe-brand: …">`.
+
+@use "tokens" as *;
+@use "themes/colors";
+
+@mixin -emit($prefix, $map) {
+  @each $key, $value in $map {
+    --oe-#{$prefix}-#{$key}: #{$value};
+  }
+}
+
+:root {
+  color-scheme: light dark;
+  --oe-brand: #{$brand-default};
+
+  --oe-font-sans: #{$font-family-sans};
+  --oe-font-heading: #{$font-family-heading};
+  --oe-font-mono: #{$font-family-mono};
+  @include -emit(font-size, $font-sizes);
+  @include -emit(font-weight, $font-weights);
+  @include -emit(line-height, $line-heights);
+  --oe-letter-spacing-wide: #{$letter-spacing-wide};
+
+  @include -emit(space, $spacing);
+  @include -emit(radius, $radius);
+  @include -emit(shadow, $shadows);
+  --oe-border-width: #{$border-width};
+
+  @include -emit(duration, $durations);
+  --oe-easing: #{$easing-standard};
+
+  --oe-container-max-width: #{$container-max-width};
+
+  // Logo identity: always-dark background of the logo.
+  --oe-logo-bg: #{palette(neutral, 950)};
+}
+
+:root,
+[data-brand] {
+  --oe-brand-glow: color-mix(in srgb, var(--oe-brand) 65%, #fff);
+  @include -emit(color, colors.$colors);
+}
+
+@each $name, $color in $brands {
+  [data-brand="#{$name}"] {
+    @include brand($color);
+  }
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+// Inherited `color` is computed on the parent, so a re-themed section must
+// set its own colours.
+[data-theme] {
+  color: var(--oe-color-text);
+  background-color: var(--oe-color-bg);
+}

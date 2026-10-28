@@ -1,0 +1,62 @@
+@use "../mixins" as *;
+
+.oe-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--oe-space-1);
+
+  & + & {
+    margin-top: var(--oe-space-4);
+  }
+}
+
+.oe-label {
+  font-size: var(--oe-font-size-sm);
+  font-weight: var(--oe-font-weight-medium);
+}
+
+.oe-help {
+  font-size: var(--oe-font-size-sm);
+  color: var(--oe-color-text-muted);
+}
+
+.oe-input,
+.oe-select,
+.oe-textarea {
+  width: 100%;
+  padding: var(--oe-space-2) var(--oe-space-3);
+  color: var(--oe-color-text);
+  background-color: var(--oe-color-bg);
+  border: var(--oe-border-width) solid var(--oe-color-border-strong);
+  border-radius: var(--oe-radius-md);
+  @include transition(border-color);
+
+  &::placeholder {
+    color: var(--oe-color-text-muted);
+  }
+
+  &:focus-visible {
+    border-color: var(--oe-color-focus);
+    outline: 2px solid var(--oe-color-focus);
+    outline-offset: 0;
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--oe-color-danger);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.oe-textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.oe-checkbox,
+.oe-radio {
+  accent-color: var(--oe-color-primary);
+}

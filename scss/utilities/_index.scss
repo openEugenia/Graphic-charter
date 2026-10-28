@@ -1,0 +1,28 @@
+@use "../mixins" as *;
+
+.oe-visually-hidden { @include visually-hidden; }
+
+.oe-text-muted { color: var(--oe-color-text-muted); }
+.oe-text-primary { color: var(--oe-color-primary); }
+
+// Vertical rhythm: evenly spaced children.
+.oe-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--oe-space-4);
+}
+
+// Horizontal group that wraps.
+.oe-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--oe-space-3);
+}
+
+// Responsive grid of equal columns.
+.oe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+  gap: var(--oe-space-5);
+}

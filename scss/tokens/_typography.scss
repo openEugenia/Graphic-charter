@@ -1,0 +1,36 @@
+// Typography tokens.
+// Fonts: Inter is the closest match to the logo lettering. The charter does not load any
+// web font itself: each project loads Inter, system fallbacks apply otherwise.
+
+$font-family-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-heading: $font-family-sans;
+$font-family-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+// Modular scale (ratio ~1.25), base 1rem = 16px.
+$font-sizes: (
+  xs: 0.75rem,
+  sm: 0.875rem,
+  md: 1rem,
+  lg: 1.25rem,
+  xl: 1.5625rem,
+  2xl: 1.953rem,
+  3xl: 2.441rem,
+  4xl: 3.052rem,
+);
+
+$font-weights: (
+  regular: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+);
+
+$line-heights: (
+  tight: 1.2,
+  snug: 1.35,
+  normal: 1.6,
+);
+
+// Wide tracking of the "OPEN-EUGENIA" wordmark, for uppercase labels.
+$letter-spacing-wide: 0.3em;

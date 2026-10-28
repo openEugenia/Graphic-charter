@@ -1,0 +1,63 @@
+// .oe-button [--secondary | --ghost] [--sm | --lg]
+
+@use "../mixins" as *;
+
+.oe-button {
+  --_bg: var(--oe-color-primary);
+  --_bg-hover: var(--oe-color-primary-hover);
+  --_fg: var(--oe-color-on-primary);
+  --_border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--oe-space-2);
+  padding: var(--oe-space-2) var(--oe-space-4);
+  font-size: var(--oe-font-size-md);
+  font-weight: var(--oe-font-weight-semibold);
+  line-height: var(--oe-line-height-tight);
+  color: var(--_fg);
+  background-color: var(--_bg);
+  border: var(--oe-border-width) solid var(--_border);
+  border-radius: var(--oe-radius-md);
+  text-decoration: none;
+  cursor: pointer;
+  @include transition(background-color, border-color, color);
+
+  &:hover {
+    color: var(--_fg);
+    background-color: var(--_bg-hover);
+    text-decoration: none;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &--secondary {
+    --_bg: transparent;
+    --_bg-hover: var(--oe-color-primary-subtle);
+    --_fg: var(--oe-color-primary);
+    --_border: var(--oe-color-primary);
+  }
+
+
+  &--ghost {
+    --_bg: transparent;
+    --_bg-hover: var(--oe-color-surface);
+    --_fg: var(--oe-color-text);
+  }
+
+  &--sm {
+    padding: var(--oe-space-1) var(--oe-space-3);
+    font-size: var(--oe-font-size-sm);
+  }
+
+  &--lg {
+    padding: var(--oe-space-3) var(--oe-space-5);
+    font-size: var(--oe-font-size-lg);
+  }
+}

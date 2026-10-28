@@ -1,0 +1,93 @@
+@use "../mixins" as *;
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--oe-font-sans);
+  font-size: var(--oe-font-size-md);
+  line-height: var(--oe-line-height-normal);
+  color: var(--oe-color-text);
+  background-color: var(--oe-color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--oe-font-heading);
+  font-weight: var(--oe-font-weight-bold);
+  line-height: var(--oe-line-height-tight);
+  color: var(--oe-color-text);
+  text-wrap: balance;
+}
+
+h1, h2, h3 {
+  font-weight: var(--oe-font-weight-extrabold);
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: var(--oe-font-size-4xl); }
+h2 { font-size: var(--oe-font-size-3xl); }
+h3 { font-size: var(--oe-font-size-2xl); }
+h4 { font-size: var(--oe-font-size-xl); }
+h5 { font-size: var(--oe-font-size-lg); }
+h6 { font-size: var(--oe-font-size-md); }
+
+* + :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: var(--oe-space-6);
+}
+
+:is(h1, h2, h3, h4, h5, h6) + * {
+  margin-top: var(--oe-space-3);
+}
+
+p + p {
+  margin-top: var(--oe-space-4);
+}
+
+a {
+  color: var(--oe-color-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+
+  &:hover {
+    color: var(--oe-color-link-hover);
+    text-decoration-thickness: 2px;
+  }
+}
+
+:focus-visible {
+  @include focus-ring;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--oe-font-mono);
+  font-size: 0.9em;
+}
+
+:not(pre) > code {
+  padding: 0.1em 0.35em;
+  border-radius: var(--oe-radius-sm);
+  background-color: var(--oe-color-surface);
+  border: var(--oe-border-width) solid var(--oe-color-border);
+}
+
+pre {
+  padding: var(--oe-space-4);
+  overflow-x: auto;
+  border-radius: var(--oe-radius-md);
+  background-color: var(--oe-color-surface);
+  border: var(--oe-border-width) solid var(--oe-color-border);
+}
+
+hr {
+  border: 0;
+  border-top: var(--oe-border-width) solid var(--oe-color-border);
+  margin: var(--oe-space-6) 0;
+}
+
+::selection {
+  background-color: var(--oe-color-primary-subtle);
+  color: var(--oe-color-text);
+}

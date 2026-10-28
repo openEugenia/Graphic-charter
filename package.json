@@ -1,0 +1,45 @@
+{
+  "name": "@openeugenia/graphic-charter",
+  "version": "0.2.0",
+  "description": "Common graphic charter of the openEugenia ecosystem: design tokens, CSS custom properties and base components.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hwattez/Graphic-charter.git"
+  },
+  "style": "dist/openeugenia.css",
+  "sass": "scss/_index.scss",
+  "exports": {
+    ".": {
+      "sass": "./scss/_index.scss",
+      "style": "./dist/openeugenia.css",
+      "default": "./dist/openeugenia.css"
+    },
+    "./css": "./dist/openeugenia.css",
+    "./css/min": "./dist/openeugenia.min.css",
+    "./css/tokens": "./dist/openeugenia-tokens.css",
+    "./scss": "./scss/_index.scss",
+    "./scss/*": "./scss/*",
+    "./package.json": "./package.json",
+    "./logo": "./logo/oe-logo.js",
+    "./logo/svg/*": "./dist/logo/*",
+    "./logo/template": "./logo/logo.js"
+  },
+  "files": [
+    "dist",
+    "scss",
+    "logo"
+  ],
+  "scripts": {
+    "build": "npm run build:css && npm run build:min && npm run build:logos",
+    "build:css": "sass --no-source-map scss/openeugenia.scss dist/openeugenia.css && sass --no-source-map scss/openeugenia-tokens.scss dist/openeugenia-tokens.css",
+    "build:min": "sass --no-source-map --style=compressed scss/openeugenia.scss dist/openeugenia.min.css",
+    "watch": "sass --watch scss/openeugenia.scss dist/openeugenia.css",
+    "prepublishOnly": "npm run build",
+    "build:logos": "node scripts/build-logos.mjs"
+  },
+  "devDependencies": {
+    "sass": "^1.80.0"
+  },
+  "type": "module"
+}

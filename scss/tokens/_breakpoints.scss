@@ -1,0 +1,23 @@
+// Breakpoints (mobile first). CSS custom properties cannot be used in
+// media queries, so these are only available through Sass.
+
+@use "sass:map";
+
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
+
+$container-max-width: 1200px;
+
+/// Applies styles from the given breakpoint upwards, e.g. `@include up(md) { … }`.
+@mixin up($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`. Available: #{map.keys($breakpoints)}.";
+  }
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}

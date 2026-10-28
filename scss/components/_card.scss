@@ -1,0 +1,23 @@
+.oe-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--oe-space-3);
+  padding: var(--oe-space-5);
+  background-color: var(--oe-color-surface-raised);
+  border: var(--oe-border-width) solid var(--oe-color-border);
+  border-radius: var(--oe-radius-lg);
+  box-shadow: var(--oe-shadow-sm);
+
+  &__title {
+    margin: 0;
+    font-size: var(--oe-font-size-lg);
+  }
+
+  &__body {
+    color: var(--oe-color-text-muted);
+  }
+
+  & > :is(h1, h2, h3, h4, h5, h6) + * {
+    margin-top: 0;
+  }
+}

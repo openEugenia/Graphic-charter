@@ -1,0 +1,24 @@
+// .oe-alert [--success | --warning | --danger | --info]
+
+.oe-alert {
+  --_color: var(--oe-color-primary);
+
+  padding: var(--oe-space-3) var(--oe-space-4);
+  color: var(--oe-color-text);
+  background-color: var(--oe-color-surface);
+  border: var(--oe-border-width) solid var(--oe-color-border);
+  border-left: 4px solid var(--_color);
+  border-radius: var(--oe-radius-md);
+
+  &__title {
+    display: block;
+    font-weight: var(--oe-font-weight-semibold);
+    color: var(--_color);
+  }
+
+  @each $variant in success, warning, danger, info {
+    &--#{$variant} {
+      --_color: var(--oe-color-#{$variant});
+    }
+  }
+}

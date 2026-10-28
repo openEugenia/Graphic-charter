@@ -1,0 +1,57 @@
+// Brand colour: the single colour a project of the ecosystem chooses.
+// Every brand-related token (primary, hover, subtle, logo glow…) derives
+// from `--oe-brand` with color-mix(), so changing it is enough.
+//
+// Requirement: white text on the brand colour must reach 4.5:1 (WCAG AA).
+// Keep in sync with BRANDS in `logo/logo.js`.
+
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+
+$brand-default: #2563eb;
+
+// Presets selectable with `data-brand="<name>"`.
+$brands: (
+  "openeugenia": $brand-default,
+  "mint": #187a58,
+  "violet": #7c3aed,
+  "rose": #be185d,
+);
+
+/// Relative luminance (WCAG 2.x).
+@function luminance($color) {
+  $l: 0;
+  @each $channel, $weight in ("red": 0.2126, "green": 0.7152, "blue": 0.0722) {
+    $v: math.div(color.channel($color, $channel, $space: rgb), 255);
+    @if $v <= 0.04045 {
+      $v: math.div($v, 12.92);
+    } @else {
+      $v: math.pow(math.div($v + 0.055, 1.055), 2.4);
+    }
+    $l: $l + $v * $weight;
+  }
+  @return $l;
+}
+
+@function contrast-with-white($color) {
+  @return math.div(1.05, luminance($color) + 0.05);
+}
+
+/// Sets the brand colour on the current selector and checks its contrast.
+///   :root { @include oe.brand(#0f766e); }
+@mixin brand($color) {
+  $ratio: contrast-with-white($color);
+  @if $ratio < 4.5 {
+    @warn "Brand colour #{$color} has a #{math.div(math.round($ratio * 100), 100)}:1 contrast with white (< 4.5:1). Choose a darker colour.";
+  }
+  --oe-brand: #{$color};
+}
+
+/// Returns a preset brand colour, e.g. `brand-color(violet)`.
+@function brand-color($name) {
+  @if not map.has-key($brands, $name) {
+    @error "Unknown brand `#{$name}`. Available: #{map.keys($brands)}.";
+  }
+  @return map.get($brands, $name);
+}

@@ -1,0 +1,40 @@
+// Semantic colour tokens, emitted as `--oe-color-<key>`.
+// Each value is a `light-dark()` pair: the active one follows the
+// `color-scheme` of the element using it (see `_custom-properties.scss`).
+
+@use "sass:map";
+@use "../tokens/palette" as *;
+
+@function -mix($percent, $with) {
+  @return color-mix(in srgb, var(--oe-brand) $percent, $with);
+}
+
+@function -pair($light, $dark) {
+  @return light-dark($light, $dark);
+}
+
+$colors: (
+  bg: -pair(palette(neutral, 0), palette(neutral, 950)),
+  surface: -pair(palette(neutral, 50), palette(neutral, 900)),
+  surface-raised: -pair(palette(neutral, 0), palette(neutral, 800)),
+  border: -pair(palette(neutral, 200), palette(neutral, 700)),
+  border-strong: -pair(palette(neutral, 400), palette(neutral, 500)),
+
+  text: -pair(palette(neutral, 950), palette(neutral, 50)),
+  text-muted: -pair(palette(neutral, 600), palette(neutral, 300)),
+  text-inverse: -pair(palette(neutral, 0), palette(neutral, 950)),
+
+  // Brand-derived tokens.
+  primary: -pair(var(--oe-brand), -mix(65%, #fff)),
+  primary-hover: -pair(-mix(80%, #000), -mix(45%, #fff)),
+  primary-subtle: -pair(-mix(10%, #fff), -mix(22%, palette(neutral, 950))),
+  on-primary: -pair(#fff, palette(neutral, 950)),
+  link: -pair(-mix(85%, #000), -mix(55%, #fff)),
+  link-hover: -pair(-mix(60%, #000), -mix(35%, #fff)),
+  focus: -pair(var(--oe-brand), -mix(65%, #fff)),
+
+  success: -pair(map.get($status, success, light), map.get($status, success, dark)),
+  warning: -pair(map.get($status, warning, light), map.get($status, warning, dark)),
+  danger: -pair(map.get($status, danger, light), map.get($status, danger, dark)),
+  info: -pair(map.get($status, info, light), map.get($status, info, dark)),
+);

@@ -1,0 +1,22 @@
+// .oe-badge [--success | --warning | --danger | --info]
+
+.oe-badge {
+  --_color: var(--oe-color-primary);
+
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125em 0.6em;
+  font-size: var(--oe-font-size-xs);
+  font-weight: var(--oe-font-weight-semibold);
+  line-height: var(--oe-line-height-snug);
+  color: var(--_color);
+  border: var(--oe-border-width) solid currentColor;
+  border-radius: var(--oe-radius-full);
+  white-space: nowrap;
+
+  @each $variant in success, warning, danger, info {
+    &--#{$variant} {
+      --_color: var(--oe-color-#{$variant});
+    }
+  }
+}

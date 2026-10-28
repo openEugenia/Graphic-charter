@@ -1,0 +1,47 @@
+// Raw colour palette of the openEugenia charter.
+// Components must not use these values directly: they go through the
+// semantic tokens defined in `themes/_colors.scss` (exposed as `--oe-color-*`).
+// The brand colour is not here: see `_brands.scss`.
+
+@use "sass:map";
+
+// Cool, navy-tinted neutrals taken from the logo background (950).
+$neutral: (
+  0: #ffffff,
+  50: #f6f8fa,
+  100: #eef1f4,
+  200: #dde2e8,
+  300: #c2c9d1,
+  400: #96a0ab,
+  500: #6b7682,
+  600: #4f5965,
+  700: #353d47,
+  800: #232a33,
+  900: #171d25,
+  950: #11161d,
+  1000: #000000,
+);
+
+// Feedback colours (light / dark variants).
+$status: (
+  success: (light: #1e7b45, dark: #6fcf97),
+  warning: (light: #9a5b00, dark: #f5b450),
+  danger: (light: #c0293b, dark: #f28b95),
+  info: (light: #0b6aa8, dark: #6cc3f5),
+);
+
+$palettes: (
+  neutral: $neutral,
+);
+
+/// Returns a palette colour, e.g. `palette(neutral, 600)`.
+@function palette($name, $shade) {
+  @if not map.has-key($palettes, $name) {
+    @error "Unknown palette `#{$name}`. Available: #{map.keys($palettes)}.";
+  }
+  $p: map.get($palettes, $name);
+  @if not map.has-key($p, $shade) {
+    @error "Unknown shade `#{$shade}` in palette `#{$name}`.";
+  }
+  @return map.get($p, $shade);
+}

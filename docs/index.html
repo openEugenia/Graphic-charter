@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Charte graphique openEugenia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="../dist/openeugenia.css">
+  <script type="module" src="../logo/oe-logo.js"></script>
+  <style>
+    .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--oe-space-3); }
+    .swatch { border: var(--oe-border-width) solid var(--oe-color-border); border-radius: var(--oe-radius-md); overflow: hidden; font-size: var(--oe-font-size-sm); }
+    .swatch > div { height: 3.5rem; }
+    .swatch > code { display: block; padding: var(--oe-space-2); border: 0; background: none; }
+    header { display: flex; flex-wrap: wrap; gap: var(--oe-space-4); justify-content: space-between; align-items: center; padding-block: var(--oe-space-5); }
+    .hero-grid { display: grid; gap: var(--oe-space-7); align-items: center; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
+    .hero-grid oe-logo { width: min(100%, 320px); justify-self: center; }
+    .logos { display: flex; flex-wrap: wrap; gap: var(--oe-space-6); align-items: end; }
+    .logos figure { display: grid; gap: var(--oe-space-2); justify-items: center; font-size: var(--oe-font-size-sm); color: var(--oe-color-text-muted); }
+  </style>
+</head>
+<body>
+  <div class="oe-container">
+    <header>
+      <oe-logo variant="horizontal"></oe-logo>
+      <div class="oe-cluster">
+        <select class="oe-select" id="brand" aria-label="Couleur de marque" style="width: auto">
+          <option value="">openEugenia (bleu)</option>
+          <option value="mint">mint</option>
+          <option value="violet">violet</option>
+          <option value="rose">rose</option>
+        </select>
+        <button class="oe-button oe-button--ghost oe-button--sm" data-set-theme="light">Clair</button>
+        <button class="oe-button oe-button--ghost oe-button--sm" data-set-theme="dark">Sombre</button>
+        <button class="oe-button oe-button--ghost oe-button--sm" data-set-theme="">Système</button>
+      </div>
+    </header>
+  </div>
+
+  <section class="oe-hero">
+    <div class="oe-container hero-grid">
+      <div class="oe-stack">
+        <span class="oe-eyebrow">Charte graphique</span>
+        <h1>Un écosystème, une identité.</h1>
+        <p class="oe-text-muted">Conférences, projets et outils partagent le même logo et le même style ; seule la couleur de marque change.</p>
+        <div class="oe-cluster">
+          <a class="oe-button oe-button--lg" href="#logo">Le logo</a>
+          <a class="oe-button oe-button--secondary oe-button--lg" href="#components">Composants</a>
+        </div>
+      </div>
+      <oe-logo></oe-logo>
+    </div>
+  </section>
+
+  <div class="oe-container">
+    <main class="oe-stack" style="padding-top: var(--oe-space-7)">
+      <h2 id="logo">Logo</h2>
+      <p>Le cadre prend automatiquement la couleur <code>--oe-brand</code> de la page. Changez la marque en haut à droite pour le voir.</p>
+      <div class="logos">
+        <figure><oe-logo style="width: 200px"></oe-logo><figcaption>full</figcaption></figure>
+        <figure><oe-logo variant="mark" style="width: 96px"></oe-logo><figcaption>mark</figcaption></figure>
+        <figure><oe-logo variant="mark" style="width: 32px"></oe-logo><figcaption>mark 32px</figcaption></figure>
+        <figure><oe-logo variant="glyph" style="width: 64px" class="oe-text-primary"></oe-logo><figcaption>glyph</figcaption></figure>
+        <figure><oe-logo variant="horizontal" label="OE-CONF 2026"></oe-logo><figcaption>horizontal + label</figcaption></figure>
+        <figure><oe-logo color="#7c3aed" style="width: 120px"></oe-logo><figcaption>color="#7c3aed"</figcaption></figure>
+      </div>
+
+      <h2 id="components">Couleurs sémantiques</h2>
+      <div class="swatches" id="swatches"></div>
+
+      <h2>Typographie</h2>
+      <h3>Titre de niveau 3</h3>
+      <p>Paragraphe de texte courant avec un <a href="#">lien</a> et du <code>code en ligne</code>.</p>
+      <pre><code>@use "pkg:@openeugenia/graphic-charter" as oe;</code></pre>
+
+      <h2>Boutons</h2>
+      <div class="oe-cluster">
+        <button class="oe-button">Primaire</button>
+        <button class="oe-button oe-button--secondary">Secondaire</button>
+        <button class="oe-button oe-button--ghost">Ghost</button>
+        <button class="oe-button" disabled>Désactivé</button>
+        <button class="oe-button oe-button--sm">Petit</button>
+        <button class="oe-button oe-button--lg">Grand</button>
+      </div>
+
+      <h2>Badges</h2>
+      <div class="oe-cluster">
+        <span class="oe-badge">Primaire</span>
+        <span class="oe-badge oe-badge--success">Succès</span>
+        <span class="oe-badge oe-badge--warning">Attention</span>
+        <span class="oe-badge oe-badge--danger">Erreur</span>
+        <span class="oe-badge oe-badge--info">Info</span>
+      </div>
+
+      <h2>Alertes</h2>
+      <div class="oe-stack">
+        <div class="oe-alert oe-alert--info"><strong class="oe-alert__title">Information</strong>La conférence ouvre ses inscriptions.</div>
+        <div class="oe-alert oe-alert--success"><strong class="oe-alert__title">Succès</strong>Votre proposition a été enregistrée.</div>
+        <div class="oe-alert oe-alert--warning"><strong class="oe-alert__title">Attention</strong>Il reste 3 jours pour soumettre.</div>
+        <div class="oe-alert oe-alert--danger"><strong class="oe-alert__title">Erreur</strong>Le formulaire contient des erreurs.</div>
+      </div>
+
+      <h2>Cartes</h2>
+      <div class="oe-grid">
+        <article class="oe-card oe-card--featured">
+          <span class="oe-eyebrow">À la une</span>
+          <h3 class="oe-card__title">Conférences</h3>
+          <p class="oe-card__body">Événements de l'écosystème openEugenia.</p>
+          <div><span class="oe-badge">2026</span></div>
+        </article>
+        <article class="oe-card">
+          <h3 class="oe-card__title">Projets</h3>
+          <p class="oe-card__body">Les projets open source de la communauté.</p>
+          <div><a class="oe-button oe-button--secondary oe-button--sm" href="#">Découvrir</a></div>
+        </article>
+        <article class="oe-card" data-brand="violet">
+          <span class="oe-eyebrow">data-brand="violet"</span>
+          <h3 class="oe-card__title">Outils</h3>
+          <p class="oe-card__body">Une section peut porter sa propre marque.</p>
+          <div><button class="oe-button oe-button--sm">Action</button></div>
+        </article>
+      </div>
+
+      <h2>Formulaires</h2>
+      <form class="oe-card" style="max-width: 32rem">
+        <div class="oe-field">
+          <label class="oe-label" for="name">Nom</label>
+          <input class="oe-input" id="name" placeholder="Ada Lovelace">
+        </div>
+        <div class="oe-field">
+          <label class="oe-label" for="email">E-mail</label>
+          <input class="oe-input" id="email" type="email" aria-invalid="true" value="ada@">
+          <span class="oe-help">Adresse e-mail invalide.</span>
+        </div>
+        <div class="oe-field">
+          <label class="oe-label" for="track">Thématique</label>
+          <select class="oe-select" id="track"><option>Recherche</option><option>Industrie</option></select>
+        </div>
+        <div class="oe-field">
+          <label class="oe-label" for="abstract">Résumé</label>
+          <textarea class="oe-textarea" id="abstract"></textarea>
+        </div>
+        <label class="oe-field"><span><input class="oe-checkbox" type="checkbox" checked> J'accepte le code de conduite</span></label>
+        <div class="oe-cluster" style="margin-top: var(--oe-space-4)">
+          <button class="oe-button" type="button">Envoyer</button>
+          <button class="oe-button oe-button--ghost" type="reset">Annuler</button>
+        </div>
+      </form>
+    </main>
+    <hr>
+    <p class="oe-text-muted" style="padding-bottom: var(--oe-space-6)">openEugenia — charte graphique v0.2.0</p>
+  </div>
+
+  <script>
+    const tokens = ["bg", "surface", "border", "text", "text-muted", "primary", "primary-hover", "primary-subtle", "success", "warning", "danger", "info"];
+    document.getElementById("swatches").innerHTML = tokens.map(t =>
+      `<div class="swatch"><div style="background: var(--oe-color-${t})"></div><code>--oe-color-${t}</code></div>`
+    ).join("");
+    document.querySelectorAll("[data-set-theme]").forEach(b => b.addEventListener("click", () => {
+      const t = b.dataset.setTheme;
+      t ? document.documentElement.dataset.theme = t : delete document.documentElement.dataset.theme;
+    }));
+    // ?theme=light|dark&brand=violet
+    const params = new URLSearchParams(location.search);
+    if (params.get("theme")) document.documentElement.dataset.theme = params.get("theme");
+    if (params.get("brand")) {
+      document.documentElement.dataset.brand = params.get("brand");
+      document.getElementById("brand").value = params.get("brand");
+    }
+    document.getElementById("brand").addEventListener("change", (e) => {
+      const b = e.target.value;
+      b ? document.documentElement.dataset.brand = b : delete document.documentElement.dataset.brand;
+    });
+  </script>
+</body>
+</html>

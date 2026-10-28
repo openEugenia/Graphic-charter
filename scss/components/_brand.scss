@@ -1,0 +1,42 @@
+// Signature elements taken from the logo.
+
+// Uppercase label with the wide tracking of the "OPEN-EUGENIA" wordmark.
+.oe-eyebrow {
+  display: block;
+  font-size: var(--oe-font-size-sm);
+  font-weight: var(--oe-font-weight-semibold);
+  letter-spacing: var(--oe-letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--oe-color-primary);
+}
+
+// Gradient frame of the logo: brand glow in two opposite corners, fading out
+// in between. Works on any element with a background.
+.oe-frame {
+  --_frame-bg: var(--oe-color-surface-raised);
+  --_frame-width: 2px;
+
+  border: var(--_frame-width) solid transparent;
+  border-radius: var(--oe-radius-lg);
+  background:
+    linear-gradient(var(--_frame-bg), var(--_frame-bg)) padding-box,
+    linear-gradient(135deg, var(--oe-brand-glow), transparent 50%, var(--oe-brand-glow)) border-box;
+
+  &--thick {
+    --_frame-width: 4px;
+  }
+}
+
+// Highlighted card, framed like the logo.
+.oe-card--featured {
+  @extend .oe-frame;
+  box-shadow: var(--oe-shadow-md);
+}
+
+// Full-width section in the logo colours: always dark, navy background.
+.oe-hero {
+  color-scheme: dark;
+  color: var(--oe-color-text);
+  background-color: var(--oe-logo-bg);
+  padding-block: var(--oe-space-9);
+}
