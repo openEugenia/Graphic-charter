@@ -24,7 +24,8 @@ npm run studio
 ```
 
 Every field of the poster (texts, key facts, topics, brand colour, photo, logo
-matrix) can be edited in the props panel on the right, with a live preview.
+variant, wordmark, size and matrix) can be edited in the props panel on the
+right, with a live preview.
 
 Edited props are saved back to `src/Root.tsx` with the panel's Save button.
 Each format has its own `defaultProps`: the Studio can only save to an object
@@ -49,9 +50,21 @@ string, e.g. `studio/?/PosterSquare`.
 | `VideoStory` | 1080×1920, 12 s | video |
 | `VideoSquare` | 1080×1080, 12 s | video |
 | `VideoLandscape` | 1920×1080, 12 s | video |
+| `BookCover` | 1015×1440 (front cover of the book) | still |
+| `BookBackCover` | 1015×1440 (back cover) | still |
 
 The page is laid out at a CSS size whose shortest side is 540px and then scaled
 up, so the charter's rem-based sizes keep the same proportions in every format.
+
+The book cover (`src/Cover.tsx`) has its own fields: subtitle, title, photo
+with its horizontal focus and darkening, the logo, and `partners`, a list of
+white-on-transparent logo files shown in a row at the bottom. Each one is
+cropped to its visible pixels, then they share one height, smaller when there
+are many.
+
+The back cover (`src/BackCover.tsx`) shares that page: title, key facts next
+to a photo (`photoFocus` sets which part of it stays in view vertically), the
+abstract (paragraphs separated by an empty line) and the same partner logos.
 
 ## Rendering
 

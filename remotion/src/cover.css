@@ -1,0 +1,171 @@
+/* Layout of the book cover (Cover.tsx), on a 1015px-wide page. */
+
+.cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  overflow: hidden;
+  color: #fff;
+  font-family: var(--oe-font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.cover-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Darkens the photo, more at the top (subtitle) and the bottom (logos). */
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgb(10 16 26 / calc(var(--cover-overlay) * 1.15)),
+    rgb(10 16 26 / var(--cover-overlay)) 30%,
+    rgb(10 16 26 / var(--cover-overlay)) 70%,
+    rgb(8 11 16 / calc(var(--cover-overlay) * 1.45))
+  );
+}
+
+.cover-edition {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.cover-head {
+  position: absolute;
+  top: 77px;
+  left: 56px;
+  right: 90px;
+  display: flex;
+  align-items: center;
+  gap: 29px;
+}
+.cover-intro {
+  margin: 0;
+  font-size: 29px;
+  font-weight: 300;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.cover-title {
+  position: absolute;
+  top: 708px;
+  left: 45px;
+  right: 45px;
+  padding: 30px 0;
+  border-block: 2px solid var(--oe-brand-glow);
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.45);
+}
+.cover-eyebrow {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.cover-title h1 {
+  margin: 4px 0 0;
+  font-size: 37px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+  text-wrap: balance;
+}
+
+.cover-partners {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 78px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cover-partner { position: relative; overflow: hidden; flex: none; }
+.cover-partner img { position: absolute; max-width: none; }
+
+/* Back cover (BackCover.tsx). */
+
+.back-title {
+  position: absolute;
+  top: 292px;
+  left: 45px;
+  right: 45px;
+  margin: 0;
+  padding-bottom: 16px;
+  border-bottom: 2px solid color-mix(in srgb, var(--oe-brand-glow) 55%, transparent);
+  text-align: center;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.45);
+}
+
+.back-card {
+  background: rgb(38 42 46 / 0.55);
+  backdrop-filter: blur(8px);
+  border: 1px solid color-mix(in srgb, var(--oe-brand-glow) 22%, transparent);
+  border-radius: 4px;
+}
+
+.back-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--oe-brand-glow);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.back-label svg { width: 34px; height: 34px; flex: none; }
+
+.back-row {
+  position: absolute;
+  top: 381px;
+  left: 45px;
+  right: 45px;
+  height: 299px;
+  display: grid;
+  grid-template-columns: 305px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 11px;
+}
+.back-facts {
+  padding: 16px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.back-fact { display: grid; gap: 6px; }
+.back-value { font-size: 20px; font-weight: 700; line-height: 1.3; white-space: pre-line; }
+.back-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--oe-brand-glow) 22%, transparent);
+}
+
+.back-abstract {
+  position: absolute;
+  top: 697px;
+  left: 45px;
+  right: 45px;
+  padding: 16px 16px 18px;
+}
+.back-abstract p { margin: 8px 0 0; font-size: 19.5px; line-height: 1.38; }

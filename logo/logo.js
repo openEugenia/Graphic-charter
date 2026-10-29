@@ -39,6 +39,29 @@ const LIGATURE = `
   <path d="M616 271H908V359H710V456H896V537H710V638H908V726H616Z"/>`;
 const LIGATURE_DEFS = `<clipPath id="__ID__-o"><rect x="0" y="0" width="624" height="${SIZE}"/></clipPath>`;
 
+// Other initials are set in Inter, centred on the ligature (587,499): capitals
+// as tall as it (470), smaller when wider than GLYPH_BOX.width, which leaves
+// a margin inside the frame.
+// An exponent (e.g. the year, as in a periodic table) follows them, its top
+// aligned with theirs.
+const GLYPH_BOX = { x: 587, y: 499, width: 900, height: 470 };
+const CAP_HEIGHT = 0.727; // Inter, in em
+const EXPONENT_SCALE = 0.36;
+const TRACKING = -0.03; // em, tighter as in a display setting
+// Advance widths of Inter Bold, roughly, in em.
+const advance = (c) => (/[0-9]/.test(c) ? 0.62 : c === c.toUpperCase() ? 0.72 : 0.56);
+const ems = (text) => [...text].reduce((sum, c) => sum + advance(c) + TRACKING, 0);
+function initialsSvg(initials, exponent) {
+  const width = ems(initials) + ems(exponent) * EXPONENT_SCALE;
+  const fontSize = Math.round(Math.min(GLYPH_BOX.height / CAP_HEIGHT, GLYPH_BOX.width / width));
+  const sup = exponent
+    ? `<tspan dy="${Math.round(-fontSize * CAP_HEIGHT * (1 - EXPONENT_SCALE) / 2)}" font-size="${Math.round(fontSize * EXPONENT_SCALE)}">${escape(exponent)}</tspan>`
+    : "";
+  return `
+  <text x="${GLYPH_BOX.x}" y="${GLYPH_BOX.y}" text-anchor="middle" dominant-baseline="central"
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="${fontSize}" font-weight="700" letter-spacing="${(TRACKING * fontSize).toFixed(1)}">${escape(initials)}${sup}</text>`;
+}
+
 // Slow back-and-forth rotation of the frame gradient. CSS (not SMIL) so that
 // prefers-reduced-motion is honoured, even in a static file shown with <img>.
 // Duration: --oe-logo-glow-duration if set, else the one <oe-logo> computes
@@ -126,6 +149,10 @@ function escape(text) {
  * @param {"full"|"mark"|"glyph"} [options.variant] full: frame + Œ + label;
  *   mark: frame + Œ (favicons, avatars); glyph: Œ alone in currentColor.
  * @param {string} [options.label] wordmark text of the "full" variant.
+ * @param {string} [options.initials] letters in the frame; empty for the
+ *   drawn Œ ligature.
+ * @param {string} [options.exponent] small text after the initials, at the
+ *   top (e.g. "26").
  * @param {string} [options.glow] frame colour; defaults to the page's
  *   --oe-brand-glow when the SVG is inlined.
  * @param {string} [options.title] accessible name.
@@ -139,6 +166,8 @@ function escape(text) {
 export function logoSvg({
   variant = "full",
   label = DEFAULT_LABEL,
+  initials = "",
+  exponent = "",
   glow: glowColor = `var(--oe-brand-glow, ${glow(BRANDS.openeugenia)})`,
   title = label,
   animated = false,
@@ -148,10 +177,11 @@ export function logoSvg({
 } = {}) {
   const id = `oe-logo-${++counter}`;
   const a11y = `role="img" aria-label="${escape(title)}"`;
+  const glyph = initials.trim() ? initialsSvg(initials.trim(), exponent.trim()) : LIGATURE;
 
   if (variant === "glyph") {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="266 264 642 470" fill="currentColor" ${a11y}>
-  <defs>${LIGATURE_DEFS}</defs>${LIGATURE}
+  <defs>${LIGATURE_DEFS}</defs>${glyph}
 </svg>`.replaceAll("__ID__", id);
   }
 
@@ -170,7 +200,7 @@ export function logoSvg({
   const matrix = vector ? matrixSvg(vector, { id: "__ID__-matrix" }) : "";
   const matrixDefs = matrix && `${matrix}
     <mask id="__ID__-letters" maskUnits="userSpaceOnUse" x="0" y="0" width="${SIZE}" height="${SIZE}">
-      <g fill="#fff"${ligatureOffset}>${LIGATURE}</g>
+      <g fill="#fff"${ligatureOffset}>${glyph}</g>
     </mask>
     <radialGradient id="__ID__-vignette" cx="0.5" cy="${variant === "full" ? 0.42 : 0.5}" r="0.55">
       <stop offset="0.55" stop-color="${LOGO_BG}" stop-opacity="0"/>
@@ -211,7 +241,7 @@ export function logoSvg({
   </defs>
   <rect x="9" y="9" width="1190" height="1190" rx="${FRAME_RADIUS}" fill="${LOGO_BG}"/>
   ${matrixBehind}
-  <g fill="#fff"${ligatureOffset}>${LIGATURE}</g>
+  <g fill="#fff"${ligatureOffset}>${glyph}</g>
   ${matrixInLetters}
   ${text}
   <g mask="url(#__ID__-frame-mask)">

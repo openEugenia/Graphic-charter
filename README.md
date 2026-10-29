@@ -1,6 +1,6 @@
 # Graphic-charter
 
-**Documentation and live demo: https://hwattez.github.io/Graphic-charter/**
+**Documentation and live demo: https://openeugenia.github.io/Graphic-charter/**
 
 Common graphic charter of the whole openEugenia ecosystem: conferences, projects and tools.
 

@@ -64,7 +64,7 @@ function Content({ layout, ...p }: PosterProps & { layout: Layout }) {
   const head = (
     <div className="poster-head">
       <Reveal delay={at(T.logo)} distance={0}>
-        <Logo options={p.logo} style={{ width: layout === "landscape" ? 120 : 104 }} />
+        <Logo options={p.logo} />
       </Reveal>
       <Reveal delay={at(T.head)} className="oe-stack" style={{ gap: "var(--oe-space-2)" }}>
         <span className="oe-eyebrow" style={{ color: "var(--oe-color-text)" }}>{p.edition}</span>

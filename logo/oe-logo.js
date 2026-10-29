@@ -5,6 +5,8 @@
 //   <oe-logo variant="mark" style="width: 48px"></oe-logo>
 //   <oe-logo variant="horizontal" label="OE-CONF 2026"></oe-logo>
 //   <oe-logo color="#7c3aed"></oe-logo>                 explicit brand colour
+//   <oe-logo initials="OC"></oe-logo>                   letters instead of the Œ
+//   <oe-logo initials="Cy" exponent="26"></oe-logo>     with a small exponent
 //
 // Options, each enabled by its attribute and disabled by removing it:
 //   <oe-logo animated></oe-logo>                        frame glow gently moves
@@ -57,7 +59,7 @@ function glowDuration(size) {
 }
 
 class OeLogo extends HTMLElement {
-  static observedAttributes = ["variant", "label", "color", "animated", "vector", "vignette", "tint", "matrix-min-size"];
+  static observedAttributes = ["variant", "label", "initials", "exponent", "color", "animated", "vector", "vignette", "tint", "matrix-min-size"];
 
   #vector = null;
   #vectorRequest = 0;
@@ -151,6 +153,8 @@ class OeLogo extends HTMLElement {
     const color = this.getAttribute("color");
     const brand = color ? `:host { --_brand: ${color}; }` : "";
     const options = {
+      initials: this.getAttribute("initials") || "",
+      exponent: this.getAttribute("exponent") || "",
       animated: this.hasAttribute("animated"),
       vector: this.#tooSmall ? null : this.#vector,
       vignette: this.hasAttribute("vignette"),

@@ -2,30 +2,29 @@
 // --oe-brand-glow. The glow rotation is set per frame instead of the CSS
 // animation, which would not be deterministic when rendering.
 
-import { useMemo, type CSSProperties } from "react";
+import { useMemo } from "react";
 import { logoSvg } from "../../logo/logo.js";
 import { useGlowAngle } from "./Reveal";
-import { sampleVector, type PosterProps } from "./schema";
+import { sampleVector, type LogoOptions } from "./schema";
 
-export function Logo({ variant = "mark", options, style }: {
-  variant?: "full" | "mark";
-  options: PosterProps["logo"];
-  style?: CSSProperties;
-}) {
+export function Logo({ options }: { options: LogoOptions }) {
   const svg = useMemo(
     () => logoSvg({
-      variant,
+      variant: options.variant,
+      label: options.label,
+      initials: options.initials,
+      exponent: options.exponent,
       vector: options.vector ? sampleVector : undefined,
       vignette: options.vignette,
       tint: options.tint,
     }),
-    [variant, options.vector, options.vignette, options.tint],
+    [options.variant, options.label, options.initials, options.exponent, options.vector, options.vignette, options.tint],
   );
   const angle = useGlowAngle();
   return (
     <div
       className="poster-logo"
-      style={{ ...style, ["--glow-angle" as string]: `${angle}deg` }}
+      style={{ width: options.size, ["--glow-angle" as string]: `${angle}deg` }}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   );
