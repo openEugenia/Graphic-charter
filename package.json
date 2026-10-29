@@ -38,7 +38,8 @@
     "prepublishOnly": "npm run build",
     "build:logos": "node scripts/build-logos.mjs",
     "prepare": "npm run build",
-    "build:site": "npm run build && node scripts/build-site.mjs"
+    "build:site": "npm run build && node scripts/build-site.mjs",
+    "build:studio": "npm --prefix remotion run site"
   },
   "devDependencies": {
     "sass": "^1.80.0"

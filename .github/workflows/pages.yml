@@ -23,8 +23,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            remotion/package-lock.json
       - run: npm ci
+      - run: npm ci --prefix remotion
       - run: npm run build:site
+      # Read-only Remotion Studio in _site/studio/ (needs the site and dist/ built first).
+      - run: npm run build:studio
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
