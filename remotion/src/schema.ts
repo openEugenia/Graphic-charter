@@ -96,6 +96,13 @@ export const backCoverSchema = z.object({
   // Blur of the background photo, in px, so it stays behind the text.
   blur: z.number().min(0).max(20).step(1),
   partners: z.array(z.string()).max(6),
+  // ISBN-13 (or ISBN-10), hyphens allowed: drawn as an EAN-13 barcode at the
+  // bottom right. Empty to leave it out.
+  isbn: z.string(),
+  // Bars and text, and the box behind them. Scanners need dark bars on a
+  // light, plain background.
+  barcodeColor: zColor(),
+  barcodeBackground: zColor(),
 });
 
 export type BackCoverProps = z.infer<typeof backCoverSchema>;

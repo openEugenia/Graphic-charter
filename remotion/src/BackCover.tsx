@@ -2,13 +2,14 @@
 // a rule, key facts next to a photo, the abstract, then the partner logos.
 
 import { Img } from "remotion";
-import { CoverPage, resolve } from "./Cover";
+import { Barcode } from "./Barcode";
+import { CORNER_WIDTH, CoverPage, resolve } from "./Cover";
 import { Icon } from "./icons";
 import type { BackCoverProps } from "./schema";
 
 export function BackCover(p: BackCoverProps) {
   return (
-    <CoverPage {...p}>
+    <CoverPage {...p} corner={p.isbn.trim() && <Barcode isbn={p.isbn} width={CORNER_WIDTH} color={p.barcodeColor} background={p.barcodeBackground} />}>
       <h1 className="back-title">{p.title}</h1>
 
       <div className="back-row">

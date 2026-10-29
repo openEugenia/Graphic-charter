@@ -38,13 +38,15 @@ export function Cover(p: CoverProps) {
 }
 
 /** Page shared by the front and back covers: darkened photo, partner logos at the bottom. */
-export function CoverPage({ brand, image, imageFocus, overlay, blur = 0, partners, children }: {
+export function CoverPage({ brand, image, imageFocus, overlay, blur = 0, partners, corner, children }: {
   brand: string;
   image: string;
   imageFocus: number;
   overlay: number;
   blur?: number;
   partners: string[];
+  // Bottom-right content (e.g. a barcode); the partner row narrows to stay clear of it.
+  corner?: ReactNode;
   children: ReactNode;
 }) {
   const { width, height } = useVideoConfig();
@@ -74,7 +76,8 @@ export function CoverPage({ brand, image, imageFocus, overlay, blur = 0, partner
         )}
         <div className="cover-overlay" />
         {children}
-        {partners.length > 0 && <Partners sources={partners} />}
+        {partners.length > 0 && <Partners sources={partners} width={corner ? BASE - 2 * CORNER_SPACE : ROW_WIDTH} />}
+        {corner && <div className="cover-corner" style={{ width: CORNER_WIDTH }}>{corner}</div>}
       </section>
     </AbsoluteFill>
   );
@@ -84,14 +87,18 @@ export function CoverPage({ brand, image, imageFocus, overlay, blur = 0, partner
 // have wide transparent margins), then they share one height, reduced when the
 // row would be wider than ROW_WIDTH.
 const ROW_WIDTH = 760;
+// Bottom-right slot: its width, and the space it takes from each side of the
+// row (margin, slot, gap) so the row stays centred.
+export const CORNER_WIDTH = 190;
+const CORNER_SPACE = 45 + CORNER_WIDTH + 30;
 const ROW_HEIGHT = 88;
 const ROW_GAP = 56;
 
-function Partners({ sources }: { sources: string[] }) {
+function Partners({ sources, width }: { sources: string[]; width: number }) {
   const boxes = useVisibleBoxes(sources.map(resolve));
   if (!boxes) return null;
   const totalAspect = boxes.reduce((sum, box) => sum + box.aspect, 0);
-  const h = Math.min(ROW_HEIGHT, (ROW_WIDTH - ROW_GAP * (boxes.length - 1)) / totalAspect);
+  const h = Math.min(ROW_HEIGHT, (width - ROW_GAP * (boxes.length - 1)) / totalAspect);
 
   return (
     <div className="cover-partners" style={{ gap: ROW_GAP }}>

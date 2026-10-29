@@ -359,6 +359,9 @@ export function Root() {
             overlay: 0.65,
             blur: 0,
             partners: [],
+            isbn: "979-10-990960-0-5",
+            barcodeColor: "#ffffff",
+            barcodeBackground: "rgba(255, 255, 255, 0)",
           }}
         />
       </Folder>

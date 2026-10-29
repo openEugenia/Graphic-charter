@@ -64,7 +64,9 @@ are many.
 
 The back cover (`src/BackCover.tsx`) shares that page: title, key facts next
 to a photo (`photoFocus` sets which part of it stays in view vertically), the
-abstract (paragraphs separated by an empty line) and the same partner logos.
+abstract (paragraphs separated by an empty line), the same partner logos,
+and `isbn`: drawn as an EAN-13 barcode at the bottom right (ISBN-13 or
+ISBN-10, hyphens allowed; an invalid check digit shows an error instead).
 
 ## Rendering
 

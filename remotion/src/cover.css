@@ -169,3 +169,16 @@
   padding: 16px 16px 18px;
 }
 .back-abstract p { margin: 8px 0 0; font-size: 19.5px; line-height: 1.38; }
+
+/* Bottom-right slot of the page (the barcode of the back cover). */
+.cover-corner { position: absolute; right: 45px; bottom: 56px; }
+
+.barcode {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px 8px;
+  border-radius: 2px;
+}
+.barcode-isbn { font-size: 12px; letter-spacing: 0.02em; text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.barcode svg { display: block; width: 100%; height: auto; fill: currentColor; font-family: "OCR-B", var(--oe-font-sans); font-size: 10px; }
+.barcode--invalid { color: #b42318; font-size: 14px; font-weight: 600; }
