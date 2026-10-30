@@ -6,6 +6,9 @@
   left: 0;
   transform-origin: 0 0;
   overflow: hidden;
+  /* Always dark, like .oe-hero: the charter's headings otherwise follow the
+     browser's theme, which is light when rendering headless. */
+  color-scheme: dark;
   color: #fff;
   font-family: var(--oe-font-sans);
   -webkit-font-smoothing: antialiased;
