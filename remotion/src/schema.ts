@@ -79,7 +79,8 @@ export const backCoverSchema = z.object({
   brand: zColor(),
   title: zTextarea(),
   infos: z.array(z.object({
-    icon: z.enum([...ICONS, "topics"]),
+    // "none" for a label without icon.
+    icon: z.enum([...ICONS, "topics", "none"]),
     label: z.string(),
     value: zTextarea(),
   })).max(4),

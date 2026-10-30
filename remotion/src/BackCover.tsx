@@ -16,7 +16,7 @@ export function BackCover(p: BackCoverProps) {
         <div className="back-card back-facts">
           {p.infos.map((info, i) => (
             <div key={i} className="back-fact">
-              <span className="back-label"><Icon name={info.icon} />{info.label}</span>
+              <span className="back-label">{info.icon !== "none" && <Icon name={info.icon} />}{info.label}</span>
               <span className="back-value">{info.value}</span>
             </div>
           ))}

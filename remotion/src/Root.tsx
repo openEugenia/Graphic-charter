@@ -8,6 +8,8 @@
 import { Composition, Folder, Still } from "remotion";
 import { BackCover } from "./BackCover";
 import { Cover } from "./Cover";
+import { LogoExport, LogoLoop, transparentVideo } from "./logo/LogoExport";
+import { logoExportSchema } from "./logo/schema";
 import { Poster } from "./Poster";
 import { backCoverSchema, coverSchema, posterSchema, type PosterProps } from "./schema";
 
@@ -16,6 +18,73 @@ const PosterVideo = (props: PosterProps) => <Poster {...props} animated />;
 export function Root() {
   return (
     <>
+      <Folder name="Logo">
+        {/* Native size of the logo's drawing. See src/logo/README.md for the exports. */}
+        <Still
+          id="LogoMark"
+          component={LogoExport}
+          width={1208}
+          height={1208}
+          schema={logoExportSchema}
+          defaultProps={{
+            brand: "#2563eb",
+            background: "rgba(0, 0, 0, 0)",
+            logo: {
+              variant: "mark" as const,
+              initials: "",
+              exponent: "",
+              label: "OPEN-EUGENIA",
+              vector: false,
+              vignette: false,
+              tint: false,
+            },
+          }}
+        />
+        <Still
+          id="LogoFull"
+          component={LogoExport}
+          width={1208}
+          height={1208}
+          schema={logoExportSchema}
+          defaultProps={{
+            brand: "#2563eb",
+            background: "rgba(0, 0, 0, 0)",
+            logo: {
+              variant: "full" as const,
+              initials: "",
+              exponent: "",
+              label: "OPEN-EUGENIA",
+              vector: true,
+              vignette: true,
+              tint: true,
+            },
+          }}
+        />
+        {/* 14 s: one back-and-forth of the frame glow, so it loops. */}
+        <Composition
+          id="LogoAnimated"
+          component={LogoLoop}
+          width={1208}
+          height={1208}
+          fps={30}
+          durationInFrames={420}
+          calculateMetadata={transparentVideo}
+          schema={logoExportSchema}
+          defaultProps={{
+            brand: "#2563eb",
+            background: "rgba(0, 0, 0, 0)",
+            logo: {
+              variant: "full" as const,
+              initials: "",
+              exponent: "",
+              label: "OPEN-EUGENIA",
+              vector: true,
+              vignette: true,
+              tint: true,
+            },
+          }}
+        />
+      </Folder>
       <Folder name="Posters">
         {/* 300 dpi, print */}
         <Still
@@ -99,7 +168,7 @@ export function Root() {
               exponent: "",
               label: "CYTOPIA",
               size: 104,
-              vector: false,
+              vector: true,
               vignette: true,
               tint: true,
             },
@@ -338,15 +407,15 @@ export function Root() {
             brand: "#00bc72",
             title: "1st conference cycles of Cytopia",
             infos: [{
-              icon: "calendar" as const,
+              icon: "none" as const,
               label: "Year",
               value: "2025-2026",
             }, {
-              icon: "location" as const,
+              icon: "none" as const,
               label: "Place",
               value: "CiuP, 75014 Paris, France",
             }, {
-              icon: "topics" as const,
+              icon: "none" as const,
               label: "Tags",
               value: "biology, diplomacy, technology",
             }],

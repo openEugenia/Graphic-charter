@@ -10,7 +10,7 @@ import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoCo
 import "../../dist/openeugenia.css";
 import "./poster.css";
 import { Icon } from "./icons";
-import { Logo } from "./Logo";
+import { Logo } from "./logo/Logo";
 import { AnimationProvider, Reveal, useEntrance } from "./Reveal";
 import type { PosterProps } from "./schema";
 

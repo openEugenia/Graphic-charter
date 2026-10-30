@@ -9,6 +9,7 @@
     "studio": "npm run charter && remotion studio",
     "still": "npm run charter && remotion still",
     "render": "npm run charter && remotion render",
+    "logo:svg": "node scripts/export-logo.mjs",
     "site": "remotion bundle --out-dir ../_site/studio",
     "typecheck": "tsc --noEmit"
   },

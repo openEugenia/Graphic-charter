@@ -29,6 +29,8 @@ const FRAME_INNER = 18;
 // squares can follow the curve instead of being cut.
 const INNER_RADIUS = 24;
 const FRAME_RADIUS = INNER_RADIUS + 9;
+// Shape of everything painted inside the frame: nothing may go past its curve.
+const BACKGROUND_RECT = `<rect x="9" y="9" width="1190" height="1190" rx="${FRAME_RADIUS}"`;
 
 // The Œ ligature: an O ring cut by the E stem (clipped 8 units under the stem
 // to avoid an anti-aliasing seam).
@@ -218,7 +220,7 @@ export function logoSvg({
   ${tint ? `<g mask="url(#__ID__-tint-mask)" opacity="${TINT_OPACITY}">
     <rect class="oe-logo-glow" x="-400" y="-400" width="${SIZE + 800}" height="${SIZE + 800}" fill="url(#__ID__-tint)"/>
   </g>` : ""}
-  ${vignette ? `<rect width="${SIZE}" height="${SIZE}" fill="url(#__ID__-vignette)"/>` : ""}`;
+  ${vignette ? `${BACKGROUND_RECT} fill="url(#__ID__-vignette)"/>` : ""}`;
   const matrixInLetters = matrix && `<g mask="url(#__ID__-letters)">
     <use href="#__ID__-matrix" fill="${LOGO_BG}" opacity="${KNOCKOUT_OPACITY}"/>
   </g>`;
@@ -239,7 +241,7 @@ export function logoSvg({
     ${LIGATURE_DEFS}
     ${matrixDefs}
   </defs>
-  <rect x="9" y="9" width="1190" height="1190" rx="${FRAME_RADIUS}" fill="${LOGO_BG}"/>
+  ${BACKGROUND_RECT} fill="${LOGO_BG}"/>
   ${matrixBehind}
   <g fill="#fff"${ligatureOffset}>${glyph}</g>
   ${matrixInLetters}

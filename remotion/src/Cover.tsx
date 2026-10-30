@@ -11,7 +11,7 @@ import { AbsoluteFill, continueRender, delayRender, Img, staticFile, useVideoCon
 import "../../dist/openeugenia.css";
 import "./poster.css";
 import "./cover.css";
-import { Logo } from "./Logo";
+import { Logo } from "./logo/Logo";
 import type { CoverProps } from "./schema";
 
 loadFont("normal", { weights: ["300", "400", "700", "800"], subsets: ["latin"] });

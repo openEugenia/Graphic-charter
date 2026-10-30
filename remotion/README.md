@@ -84,6 +84,10 @@ npm run render -- VideoStory out/story.mp4 --props=my-event.json
 `image` is a URL or a file of `docs/` (the public folder), e.g. `hero-sample.svg`.
 `brand` must reach a 4.5:1 contrast with white text, as everywhere in the charter.
 
+## Logo
+
+The logo alone (creation, then PNG, SVG and WebM exports): see [src/logo/README.md](src/logo/README.md).
+
 ## Animation
 
 In the videos the elements enter one after the other (logo, head, tagline,

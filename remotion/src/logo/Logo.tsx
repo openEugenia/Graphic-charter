@@ -3,11 +3,13 @@
 // animation, which would not be deterministic when rendering.
 
 import { useMemo } from "react";
-import { logoSvg } from "../../logo/logo.js";
-import { useGlowAngle } from "./Reveal";
-import { sampleVector, type LogoOptions } from "./schema";
+import { logoSvg } from "../../../logo/logo.js";
+import { useGlowAngle } from "../Reveal";
+import { sampleVector, type LogoOptions } from "../schema";
+import "./logo.css";
 
-export function Logo({ options }: { options: LogoOptions }) {
+// Without `size`, the logo fills its parent.
+export function Logo({ options }: { options: Omit<LogoOptions, "size"> & { size?: number } }) {
   const svg = useMemo(
     () => logoSvg({
       variant: options.variant,
@@ -23,7 +25,7 @@ export function Logo({ options }: { options: LogoOptions }) {
   const angle = useGlowAngle();
   return (
     <div
-      className="poster-logo"
+      className="logo"
       style={{ width: options.size, ["--glow-angle" as string]: `${angle}deg` }}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
