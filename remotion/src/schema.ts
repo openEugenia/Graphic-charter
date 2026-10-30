@@ -52,6 +52,23 @@ export const posterSchema = z.object({
 
 export type PosterProps = z.infer<typeof posterSchema>;
 
+// Partner logo of the covers (URL or file of docs/).
+export const partnerSchema = z.object({
+  src: z.string(),
+  // Rounding, in % of the logo's shorter side: 50 gives a circle or a pill.
+  // Follows the logo's box: it only shows on a logo with a filled background.
+  radius: z.number().min(0).max(50).step(1),
+  // To even out the row:
+  // - grayscale: black and white, any logo;
+  // - white / brand: one colour, for a logo on a transparent background (an
+  //   opaque image becomes a plain rectangle);
+  // - remove-light / remove-dark: for an opaque image (JPEG), whose light or
+  //   dark background disappears and leaves the logo in light grey.
+  filter: z.enum(["none", "grayscale", "white", "brand", "remove-light", "remove-dark"]),
+});
+
+export type Partner = z.infer<typeof partnerSchema>;
+
 // Book cover: logo and subtitle at the top, title between two rules, partner
 // logos in a row at the bottom.
 export const coverSchema = z.object({
@@ -67,8 +84,8 @@ export const coverSchema = z.object({
   // Darkness of the overlay that keeps the text readable.
   overlay: z.number().min(0).max(1).step(0.05),
   logo: logoSchema,
-  // Partner logos (white on transparent), shown at the same height in a row.
-  partners: z.array(z.string()).max(6),
+  // Partner logos, shown at the same height in a row.
+  partners: z.array(partnerSchema).max(6),
 });
 
 export type CoverProps = z.infer<typeof coverSchema>;
@@ -96,7 +113,7 @@ export const backCoverSchema = z.object({
   overlay: z.number().min(0).max(1).step(0.05),
   // Blur of the background photo, in px, so it stays behind the text.
   blur: z.number().min(0).max(20).step(1),
-  partners: z.array(z.string()).max(6),
+  partners: z.array(partnerSchema).max(6),
   // ISBN-13 (or ISBN-10), hyphens allowed: drawn as an EAN-13 barcode at the
   // bottom right. Empty to leave it out.
   isbn: z.string(),

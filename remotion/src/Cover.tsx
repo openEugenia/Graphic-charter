@@ -6,13 +6,13 @@
 // size, like the posters.
 
 import { loadFont } from "@remotion/google-fonts/Inter";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { AbsoluteFill, continueRender, delayRender, Img, staticFile, useVideoConfig } from "remotion";
 import "../../dist/openeugenia.css";
 import "./poster.css";
 import "./cover.css";
 import { Logo } from "./logo/Logo";
-import type { CoverProps } from "./schema";
+import type { CoverProps, Partner } from "./schema";
 
 loadFont("normal", { weights: ["300", "400", "700", "800"], subsets: ["latin"] });
 
@@ -44,7 +44,7 @@ export function CoverPage({ brand, image, imageFocus, overlay, blur = 0, partner
   imageFocus: number;
   overlay: number;
   blur?: number;
-  partners: string[];
+  partners: Partner[];
   // Bottom-right content (e.g. a barcode); the partner row narrows to stay clear of it.
   corner?: ReactNode;
   children: ReactNode;
@@ -76,7 +76,7 @@ export function CoverPage({ brand, image, imageFocus, overlay, blur = 0, partner
         )}
         <div className="cover-overlay" />
         {children}
-        {partners.length > 0 && <Partners sources={partners} width={corner ? BASE - 2 * CORNER_SPACE : ROW_WIDTH} />}
+        {partners.length > 0 && <Partners partners={partners} brand={brand} width={corner ? BASE - 2 * CORNER_SPACE : ROW_WIDTH} />}
         {corner && <div className="cover-corner" style={{ width: CORNER_WIDTH }}>{corner}</div>}
       </section>
     </AbsoluteFill>
@@ -94,16 +94,42 @@ const CORNER_SPACE = 45 + CORNER_WIDTH + 30;
 const ROW_HEIGHT = 88;
 const ROW_GAP = 56;
 
-function Partners({ sources, width }: { sources: string[]; width: number }) {
-  const boxes = useVisibleBoxes(sources.map(resolve));
+const PARTNER_FILTERS: Record<Partner["filter"], CSSProperties> = {
+  none: {},
+  grayscale: { filter: "grayscale(1)" },
+  white: { filter: "brightness(0) invert(1)" },
+  brand: { filter: "url(#cover-partner-brand)" },
+  // Background to black, which `screen` removes from the photo behind.
+  "remove-light": { filter: "grayscale(1) invert(1) brightness(1.6)", mixBlendMode: "screen" },
+  "remove-dark": { filter: "grayscale(1) contrast(1.4) brightness(1.2)", mixBlendMode: "screen" },
+};
+
+function Partners({ partners, brand, width }: { partners: Partner[]; brand: string; width: number }) {
+  const boxes = useVisibleBoxes(partners.map((partner) => resolve(partner.src)));
   if (!boxes) return null;
   const totalAspect = boxes.reduce((sum, box) => sum + box.aspect, 0);
   const h = Math.min(ROW_HEIGHT, (width - ROW_GAP * (boxes.length - 1)) / totalAspect);
 
   return (
     <div className="cover-partners" style={{ gap: ROW_GAP }}>
+      {/* The brand colour, kept only where the logo is opaque. */}
+      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
+        <filter id="cover-partner-brand" colorInterpolationFilters="sRGB">
+          <feFlood floodColor={brand} />
+          <feComposite in2="SourceAlpha" operator="in" />
+        </filter>
+      </svg>
       {boxes.map((box, i) => (
-        <div key={i} className="cover-partner" style={{ width: h * box.aspect, height: h }}>
+        <div
+          key={i}
+          className="cover-partner"
+          style={{
+            width: h * box.aspect,
+            height: h,
+            borderRadius: (Math.min(h * box.aspect, h) * (partners[i]?.radius ?? 0)) / 100,
+            ...PARTNER_FILTERS[partners[i]?.filter ?? "none"],
+          }}
+        >
           <Img
             src={box.src}
             style={{

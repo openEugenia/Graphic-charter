@@ -394,7 +394,23 @@ export function Root() {
               vignette: true,
               tint: true,
             },
-            partners: ["img/fir.png"],
+            partners: [{
+              src: "img/fir.png",
+              radius: 0,
+              filter: "none" as const,
+            }, {
+              src: "img/diplo.jpg",
+              radius: 0,
+              filter: "remove-light" as const,
+            }, {
+              src: "img/gt2.png",
+              radius: 0,
+              filter: "remove-dark" as const,
+            }, {
+              src: "img/openEugenia.png",
+              radius: 0,
+              filter: "grayscale" as const,
+            }],
           }}
         />
         <Still
