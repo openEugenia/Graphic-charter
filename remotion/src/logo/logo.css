@@ -1,6 +1,6 @@
 /* Logo inlined by Logo.tsx: frame glow rotated by the --glow-angle of the frame. */
-.logo { aspect-ratio: 1; flex: none; }
-.logo svg { display: block; width: 100%; height: 100%; }
+.logo { flex: none; }
+.logo svg { display: block; width: 100%; height: auto; }
 .logo .oe-logo-glow {
   transform-box: view-box;
   transform-origin: 50% 50%;

@@ -9,13 +9,14 @@ export const ICONS = ["calendar", "drink", "location", "ticket", "people", "link
 
 // The charter's logo (logo/logo.js), shared by every composition.
 export const logoSchema = z.object({
-  // "mark": frame and initials; "full": with the wordmark under it.
-  variant: z.enum(["mark", "full"]),
+  // "mark": frame and initials; "full": with the wordmark under it; "lockup":
+  // initials on the left, the label stacked on the right (not square, no matrix).
+  variant: z.enum(["mark", "full", "lockup"]),
   // Letters in the frame; empty for the drawn Œ ligature.
   initials: z.string().max(3),
   // Small text after the initials, at the top (e.g. "26").
   exponent: z.string().max(4),
-  // Wordmark of the "full" variant.
+  // Wordmark ("lockup": a new line at each hyphen or space).
   label: z.string(),
   // Width in px of the layout (scaled with the format).
   size: z.number().min(48).max(320).step(4),
@@ -23,6 +24,14 @@ export const logoSchema = z.object({
   vector: z.boolean(),
   vignette: z.boolean(),
   tint: z.boolean(),
+  // Off for the letters and wordmark alone; `ink` then has to contrast with
+  // what is behind the logo.
+  background: z.boolean().default(true),
+  frame: z.boolean().default(true),
+  // Colour of the letters and the wordmark.
+  ink: zColor().default("#ffffff"),
+  // Thickness of the wordmark: 100 is the thinnest, 900 the heaviest.
+  labelWeight: z.number().min(100).max(900).step(100).default(500),
 });
 
 export type LogoOptions = z.infer<typeof logoSchema>;

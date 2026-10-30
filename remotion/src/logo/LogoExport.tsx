@@ -1,14 +1,11 @@
 // The logo alone, filling the output, for the "Logo" compositions.
 
-import { loadFont } from "@remotion/google-fonts/Inter";
 import { AbsoluteFill, type CalculateMetadataFunction } from "remotion";
+import { logoSvg } from "../../../logo/logo.js";
 import "../../../dist/openeugenia.css";
 import { AnimationProvider } from "../Reveal";
 import { Logo } from "./Logo";
 import type { LogoExportProps } from "./schema";
-
-// Wordmark and initials.
-loadFont("normal", { weights: ["500", "700"], subsets: ["latin"] });
 
 export function LogoExport({ brand, background, logo, animated = false }: LogoExportProps & { animated?: boolean }) {
   return (
@@ -32,3 +29,9 @@ export const transparentVideo: CalculateMetadataFunction<LogoExportProps> = () =
   defaultVideoImageFormat: "png",
   defaultPixelFormat: "yuva420p",
 });
+
+// The lockup's proportions depend on its label: the output follows its drawing.
+export const lockupSize: CalculateMetadataFunction<LogoExportProps> = ({ props }) => {
+  const [, , width, height] = logoSvg({ ...props.logo, vector: undefined }).match(/viewBox="([^"]+)"/)![1].split(" ").map(Number);
+  return { width, height };
+};

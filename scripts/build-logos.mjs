@@ -28,8 +28,8 @@ if (existsSync(VECTOR_FILE)) {
 for (const [brand, color] of Object.entries(BRANDS)) {
   const dir = `dist/logo/${brand}`;
   mkdirSync(dir, { recursive: true });
-  for (const variant of ["full", "mark"]) {
-    for (const withMatrix of vector ? [false, true] : [false]) {
+  for (const variant of ["full", "mark", "lockup"]) {
+    for (const withMatrix of vector && variant !== "lockup" ? [false, true] : [false]) {
       for (const animated of [false, true]) {
         const name = `openeugenia-${variant}${withMatrix ? "-matrix" : ""}${animated ? "-animated" : ""}.svg`;
         const svg = logoSvg({ variant, glow: glow(color), animated, vector: withMatrix ? vector : null, ...matrixOptions });

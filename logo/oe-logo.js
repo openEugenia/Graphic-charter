@@ -4,6 +4,7 @@
 //   <oe-logo></oe-logo>                                  full logo, page brand colour
 //   <oe-logo variant="mark" style="width: 48px"></oe-logo>
 //   <oe-logo variant="horizontal" label="OE-CONF 2026"></oe-logo>
+//   <oe-logo variant="lockup"></oe-logo>                Œ on the left, label stacked on the right
 //   <oe-logo color="#7c3aed"></oe-logo>                 explicit brand colour
 //   <oe-logo initials="OC"></oe-logo>                   letters instead of the Œ
 //   <oe-logo initials="Cy" exponent="26"></oe-logo>     with a small exponent
@@ -15,6 +16,8 @@
 //   logo.vector = float32Array;                         or set from JavaScript
 //   <oe-logo vector="…" vignette></oe-logo>             matrix darkened towards the edges
 //   <oe-logo vector="…" tint></oe-logo>                 brightest squares in the brand colour
+//   <oe-logo no-background no-frame ink="#11161d"></oe-logo>  letters and wordmark alone
+//   <oe-logo label-weight="300"></oe-logo>              thinner wordmark (100 to 900)
 //
 // The JSON file holds an array of numbers, or an object with a `vector` array.
 // The matrix is hidden when the logo is smaller than `matrix-min-size` pixels
@@ -59,7 +62,7 @@ function glowDuration(size) {
 }
 
 class OeLogo extends HTMLElement {
-  static observedAttributes = ["variant", "label", "initials", "exponent", "color", "animated", "vector", "vignette", "tint", "matrix-min-size"];
+  static observedAttributes = ["variant", "label", "initials", "exponent", "color", "animated", "vector", "vignette", "tint", "no-background", "no-frame", "ink", "label-weight", "matrix-min-size"];
 
   #vector = null;
   #vectorRequest = 0;
@@ -159,6 +162,10 @@ class OeLogo extends HTMLElement {
       vector: this.#tooSmall ? null : this.#vector,
       vignette: this.hasAttribute("vignette"),
       tint: this.hasAttribute("tint"),
+      background: !this.hasAttribute("no-background"),
+      frame: !this.hasAttribute("no-frame"),
+      ink: this.getAttribute("ink") || undefined,
+      labelWeight: this.getAttribute("label-weight") || undefined,
     };
 
     const content = variant === "horizontal"

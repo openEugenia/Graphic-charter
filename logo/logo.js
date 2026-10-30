@@ -30,7 +30,7 @@ const FRAME_INNER = 18;
 const INNER_RADIUS = 24;
 const FRAME_RADIUS = INNER_RADIUS + 9;
 // Shape of everything painted inside the frame: nothing may go past its curve.
-const BACKGROUND_RECT = `<rect x="9" y="9" width="1190" height="1190" rx="${FRAME_RADIUS}"`;
+const frameRect = (width, height) => `<rect x="9" y="9" width="${width - 18}" height="${height - 18}" rx="${FRAME_RADIUS}"`;
 
 // The Œ ligature: an O ring cut by the E stem (clipped 8 units under the stem
 // to avoid an anti-aliasing seam).
@@ -53,15 +53,60 @@ const TRACKING = -0.03; // em, tighter as in a display setting
 // Advance widths of Inter Bold, roughly, in em.
 const advance = (c) => (/[0-9]/.test(c) ? 0.62 : c === c.toUpperCase() ? 0.72 : 0.56);
 const ems = (text) => [...text].reduce((sum, c) => sum + advance(c) + TRACKING, 0);
-function initialsSvg(initials, exponent) {
+function initialsSize(initials, exponent) {
   const width = ems(initials) + ems(exponent) * EXPONENT_SCALE;
   const fontSize = Math.round(Math.min(GLYPH_BOX.height / CAP_HEIGHT, GLYPH_BOX.width / width));
+  return { fontSize, width: width * fontSize };
+}
+function initialsSvg(initials, exponent) {
+  const { fontSize } = initialsSize(initials, exponent);
   const sup = exponent
     ? `<tspan dy="${Math.round(-fontSize * CAP_HEIGHT * (1 - EXPONENT_SCALE) / 2)}" font-size="${Math.round(fontSize * EXPONENT_SCALE)}">${escape(exponent)}</tspan>`
     : "";
   return `
   <text x="${GLYPH_BOX.x}" y="${GLYPH_BOX.y}" text-anchor="middle" dominant-baseline="central"
         font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="${fontSize}" font-weight="700" letter-spacing="${(TRACKING * fontSize).toFixed(1)}">${escape(initials)}${sup}</text>`;
+}
+
+// Lockup: the letters on the left, the label's words stacked on the right,
+// as tall as the letters. The stack is at most LOCKUP_CAP tall per line.
+// Each line gets a computed length, so the block's width does not depend on
+// the font; the wide margins are only there for a background or a frame.
+const LIGATURE_BOX = { x: 266, y: 264, width: 642, height: 470 };
+const LOCKUP_CAP = 200;
+const LOCKUP_LINE_GAP = 70;
+const LOCKUP_COLUMN_GAP = 110;
+const LOCKUP_TRACKING = 0.12; // em
+const LOCKUP_PADDING = 150;
+const LOCKUP_TIGHT_PADDING = 8;
+const LOCKUP_DESCENT = 0.24; // Inter, in em
+
+function lockup({ label, initials, exponent, boxed, ink, weight }) {
+  const lines = label.split(/[-\s]+/).filter(Boolean);
+  const cap = Math.min(LOCKUP_CAP, (GLYPH_BOX.height - (lines.length - 1) * LOCKUP_LINE_GAP) / lines.length);
+  const fontSize = Math.round(cap / CAP_HEIGHT);
+  // Room for a descender, which the frame or the crop would otherwise cut.
+  const descent = /[gjpqy]/.test(initials) ? Math.round(initialsSize(initials, exponent).fontSize * LOCKUP_DESCENT) : 0;
+  const padding = (boxed ? LOCKUP_PADDING : LOCKUP_TIGHT_PADDING) + descent;
+  const glyphWidth = initials ? initialsSize(initials, exponent).width : LIGATURE_BOX.width;
+  const glyphLeft = initials ? GLYPH_BOX.x - glyphWidth / 2 : LIGATURE_BOX.x;
+
+  const textX = padding + glyphWidth + LOCKUP_COLUMN_GAP;
+  const lengths = lines.map((line) => Math.round(
+    [...line].reduce((sum, c) => sum + advance(c) + LOCKUP_TRACKING, -LOCKUP_TRACKING) * fontSize,
+  ));
+  const stack = lines.length * cap + (lines.length - 1) * LOCKUP_LINE_GAP;
+  const top = padding + (GLYPH_BOX.height - stack) / 2;
+  const text = lines.map((line, i) => `<text x="${textX}" y="${Math.round(top + cap + i * (cap + LOCKUP_LINE_GAP))}" fill="${escape(ink)}"
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="${fontSize}" font-weight="${escape(weight)}"
+        textLength="${lengths[i]}" lengthAdjust="spacing">${escape(line)}</text>`).join("");
+
+  return {
+    width: Math.round(textX + Math.max(...lengths) + padding),
+    height: GLYPH_BOX.height + 2 * padding,
+    text,
+    glyphOffset: ` transform="translate(${Math.round(padding - glyphLeft)} ${padding - LIGATURE_BOX.y})"`,
+  };
 }
 
 // Slow back-and-forth rotation of the frame gradient. CSS (not SMIL) so that
@@ -148,9 +193,12 @@ function escape(text) {
 /**
  * Returns the logo as an SVG string.
  * @param {object} options
- * @param {"full"|"mark"|"glyph"} [options.variant] full: frame + Œ + label;
- *   mark: frame + Œ (favicons, avatars); glyph: Œ alone in currentColor.
- * @param {string} [options.label] wordmark text of the "full" variant.
+ * @param {"full"|"mark"|"lockup"|"glyph"} [options.variant] full: frame + Œ +
+ *   label; mark: frame + Œ (favicons, avatars); lockup: Œ on the left, the
+ *   label's words stacked on the right, not square and without matrix;
+ *   glyph: Œ alone in currentColor.
+ * @param {string} [options.label] wordmark text of the "full" and "lockup"
+ *   variants ("lockup" starts a new line at each hyphen or space).
  * @param {string} [options.initials] letters in the frame; empty for the
  *   drawn Œ ligature.
  * @param {string} [options.exponent] small text after the initials, at the
@@ -164,6 +212,12 @@ function escape(text) {
  * @param {boolean} [options.vignette] darkens the matrix towards the edges.
  * @param {boolean} [options.tint] lights the matrix with the brand glow,
  *   strongest near the frame's bright corners and on the brightest squares.
+ * @param {boolean} [options.background] draws the navy background; without
+ *   it the vignette, which darkens that background, is left out too.
+ * @param {boolean} [options.frame] draws the gradient frame.
+ * @param {string} [options.ink] colour of the letters and the wordmark.
+ * @param {number} [options.labelWeight] font weight of the wordmark, from 100
+ *   (thinnest) to 900.
  */
 export function logoSvg({
   variant = "full",
@@ -176,6 +230,10 @@ export function logoSvg({
   vector = null,
   vignette = false,
   tint = false,
+  background = true,
+  frame = true,
+  ink = "#fff",
+  labelWeight = 500,
 } = {}) {
   const id = `oe-logo-${++counter}`;
   const a11y = `role="img" aria-label="${escape(title)}"`;
@@ -187,19 +245,27 @@ export function logoSvg({
 </svg>`.replaceAll("__ID__", id);
   }
 
+  const stacked = variant === "lockup"
+    ? lockup({ label, initials: initials.trim(), exponent: exponent.trim(), boxed: background || frame, ink, weight: labelWeight })
+    : null;
+  const width = stacked?.width ?? SIZE;
+  const height = stacked?.height ?? SIZE;
+  // Larger than the logo at any angle, for the frame's rotating gradient.
+  const glowSize = Math.max(width, height) + 800;
+
   // Wordmark sized like the original; short labels keep their natural tracking.
-  const text = variant === "full"
-    ? `<text x="604" y="1021" text-anchor="middle" fill="#fff"
-        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="84" font-weight="500"
+  const text = stacked ? stacked.text : variant === "full"
+    ? `<text x="604" y="1021" text-anchor="middle" fill="${escape(ink)}"
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="84" font-weight="${escape(labelWeight)}"
         textLength="${Math.min(1005, label.length * 84)}" lengthAdjust="spacing">${escape(label)}</text>`
     : "";
-  const ligatureOffset = variant === "full" ? "" : ` transform="translate(17 105)"`;
+  const ligatureOffset = stacked?.glyphOffset ?? (variant === "full" ? "" : ` transform="translate(17 105)"`);
 
   // Matrix: white behind the letters, navy carved into the letters, and
   // optionally a brand-coloured light and a radial vignette centred on the Œ.
   // The light is the frame's gradient (rotating with it when animated) seen
   // through the matrix: each square takes it in proportion to its value.
-  const matrix = vector ? matrixSvg(vector, { id: "__ID__-matrix" }) : "";
+  const matrix = vector && !stacked ? matrixSvg(vector, { id: "__ID__-matrix" }) : "";
   const matrixDefs = matrix && `${matrix}
     <mask id="__ID__-letters" maskUnits="userSpaceOnUse" x="0" y="0" width="${SIZE}" height="${SIZE}">
       <g fill="#fff"${ligatureOffset}>${glyph}</g>
@@ -220,34 +286,34 @@ export function logoSvg({
   ${tint ? `<g mask="url(#__ID__-tint-mask)" opacity="${TINT_OPACITY}">
     <rect class="oe-logo-glow" x="-400" y="-400" width="${SIZE + 800}" height="${SIZE + 800}" fill="url(#__ID__-tint)"/>
   </g>` : ""}
-  ${vignette ? `${BACKGROUND_RECT} fill="url(#__ID__-vignette)"/>` : ""}`;
+  ${vignette && background ? `${frameRect(SIZE, SIZE)} fill="url(#__ID__-vignette)"/>` : ""}`;
   const matrixInLetters = matrix && `<g mask="url(#__ID__-letters)">
     <use href="#__ID__-matrix" fill="${LOGO_BG}" opacity="${KNOCKOUT_OPACITY}"/>
   </g>`;
 
   // The frame is a mask over an oversized gradient rect, so the gradient can
   // be rotated without its ends showing.
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE} ${SIZE}" ${a11y}>
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" ${a11y}>
   ${animated ? ANIMATION_STYLE : ""}
   <defs>
-    <linearGradient id="__ID__-frame" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${SIZE}" y2="${SIZE}">
+    <linearGradient id="__ID__-frame" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${width}" y2="${height}">
       <stop offset="0" style="stop-color: ${glowColor}"/>
       <stop offset="0.5" stop-color="#05080b"/>
       <stop offset="1" style="stop-color: ${glowColor}"/>
     </linearGradient>
-    <mask id="__ID__-frame-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="${SIZE}" height="${SIZE}">
-      <rect x="9" y="9" width="1190" height="1190" rx="${FRAME_RADIUS}" fill="none" stroke="#fff" stroke-width="18"/>
+    <mask id="__ID__-frame-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="${width}" height="${height}">
+      ${frameRect(width, height)} fill="none" stroke="#fff" stroke-width="18"/>
     </mask>
     ${LIGATURE_DEFS}
     ${matrixDefs}
   </defs>
-  ${BACKGROUND_RECT} fill="${LOGO_BG}"/>
+  ${background ? `${frameRect(width, height)} fill="${LOGO_BG}"/>` : ""}
   ${matrixBehind}
-  <g fill="#fff"${ligatureOffset}>${glyph}</g>
+  <g fill="${escape(ink)}"${ligatureOffset}>${glyph}</g>
   ${matrixInLetters}
   ${text}
-  <g mask="url(#__ID__-frame-mask)">
-    <rect class="oe-logo-glow" x="-400" y="-400" width="${SIZE + 800}" height="${SIZE + 800}" fill="url(#__ID__-frame)"/>
-  </g>
+  ${frame ? `<g mask="url(#__ID__-frame-mask)">
+    <rect class="oe-logo-glow" x="-400" y="-400" width="${glowSize}" height="${glowSize}" fill="url(#__ID__-frame)"/>
+  </g>` : ""}
 </svg>`.replaceAll("__ID__", id);
 }

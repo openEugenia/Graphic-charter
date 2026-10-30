@@ -19,9 +19,16 @@ label and the matrix options. All are saved back to `src/Root.tsx`.
 |---|---|
 | `LogoMark` | 1208×1208, frame and initials |
 | `LogoFull` | 1208×1208, with the wordmark |
+| `LogoLockup` | letters on the left, label stacked on the right, tightly cropped |
 | `LogoAnimated` | 1208×1208, 14 s loop of the frame glow |
 
 The background is transparent unless `background` says otherwise.
+
+For the letters and wordmark alone, turn off `logo.background` and `logo.frame`,
+and set `logo.ink` to a colour that contrasts with where the logo will sit (keep
+`logo.vector` off too: its squares belong on the navy background).
+
+`logo.labelWeight` sets the thickness of the wordmark, from 100 (thinnest) to 900.
 
 ## Exporting
 
@@ -29,6 +36,7 @@ The background is transparent unless `background` says otherwise.
 npm run still -- LogoFull out/logo/logo.png                  # transparent PNG
 npm run still -- LogoFull out/logo/logo@2x.png --scale=2     # larger PNG
 npm run render -- LogoAnimated out/logo/logo.webm            # transparent VP9
+npm run still -- LogoLockup out/logo/lockup.png              # transparent PNG
 npm run logo:svg -- my-logo.json                             # SVG, static and animated
 ```
 

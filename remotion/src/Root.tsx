@@ -8,7 +8,7 @@
 import { Composition, Folder, Still } from "remotion";
 import { BackCover } from "./BackCover";
 import { Cover } from "./Cover";
-import { LogoExport, LogoLoop, transparentVideo } from "./logo/LogoExport";
+import { LogoExport, LogoLoop, lockupSize, transparentVideo } from "./logo/LogoExport";
 import { logoExportSchema } from "./logo/schema";
 import { Poster } from "./Poster";
 import { backCoverSchema, coverSchema, posterSchema, type PosterProps } from "./schema";
@@ -37,6 +37,10 @@ export function Root() {
               vector: false,
               vignette: false,
               tint: false,
+              background: false,
+              frame: false,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -57,6 +61,36 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
+            },
+          }}
+        />
+        {/* Its size follows the label. */}
+        <Still
+          id="LogoLockup"
+          component={LogoExport}
+          width={2400}
+          height={486}
+          calculateMetadata={lockupSize}
+          schema={logoExportSchema}
+          defaultProps={{
+            brand: "#2563eb",
+            background: "rgba(0, 0, 0, 0)",
+            logo: {
+              variant: "lockup" as const,
+              initials: "",
+              exponent: "",
+              label: "open Eugenia",
+              vector: false,
+              vignette: false,
+              tint: false,
+              background: false,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 300,
             },
           }}
         />
@@ -81,6 +115,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -121,6 +159,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -171,6 +213,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -208,6 +254,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -245,6 +295,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -286,6 +340,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -325,6 +383,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -364,6 +426,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
           }}
         />
@@ -383,7 +449,7 @@ export function Root() {
             title: "The 1st conference cycles of Cytopia",
             image: "img/mi.jpg",
             imageFocus: 76,
-            overlay: 0.65,
+            overlay: 0.6,
             logo: {
               variant: "full" as const,
               initials: "Cy",
@@ -393,6 +459,10 @@ export function Root() {
               vector: true,
               vignette: true,
               tint: true,
+              background: true,
+              frame: true,
+              ink: "#ffffff",
+              labelWeight: 500,
             },
             partners: [{
               src: "img/fir.png",
@@ -407,7 +477,7 @@ export function Root() {
               radius: 0,
               filter: "remove-dark" as const,
             }, {
-              src: "img/oe3.png",
+              src: "img/oe8.png",
               radius: 0,
               filter: "grayscale" as const,
             }],
@@ -441,7 +511,7 @@ export function Root() {
             abstract: "Cytopia is a program of thematic cycles of conferences organized at the Cité internationale universitaire de Paris. Each cycle gathers several conferences around a shared theme and creates an interdisciplinary space for reflection, debate, and knowledge production.\n\nThe project is not only a hosting platform for innovative conferences: it is also an experiment in new conference program formats. Discussions, articles, conferences, the final book, and the website are designed as media enhanced by the use of artificial intelligence, making it possible to navigate and query the content in a more interactive way.\n\nThe format sits at the intersection of an open and experimental campus dynamic and the standards of national and international academic conferences. This intermediate position makes it possible to introduce original tools and presentation formats that depart from more conventional conference models.",
             image: "img/mi.jpg",
             imageFocus: 25,
-            overlay: 0.65,
+            overlay: 0.6,
             blur: 0,
             partners: [],
             isbn: "979-10-990960-0-5",
