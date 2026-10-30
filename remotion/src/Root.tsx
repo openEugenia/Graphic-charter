@@ -30,7 +30,7 @@ export function Root() {
             brand: "#2563eb",
             background: "rgba(0, 0, 0, 0)",
             logo: {
-              variant: "mark" as const,
+              variant: "full" as const,
               initials: "",
               exponent: "",
               label: "OPEN-EUGENIA",
@@ -407,7 +407,7 @@ export function Root() {
               radius: 0,
               filter: "remove-dark" as const,
             }, {
-              src: "img/openEugenia.png",
+              src: "img/oe3.png",
               radius: 0,
               filter: "grayscale" as const,
             }],
